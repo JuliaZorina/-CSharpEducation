@@ -18,8 +18,6 @@ namespace Task2
             if (playersType == "y")
             {
                 TwoPlayersMode(gamebox);
-                PlayAgain(gamebox);
-
             }
             else if(playersType == "n"){
                 Console.WriteLine("Вы играете против бота. Вы ходите Х. Ход Х: ");
@@ -41,6 +39,7 @@ namespace Task2
                 {
                     gamebox[i] = null;
                 }
+                Game();
             }
             else
                 Console.WriteLine("Выход из игры...");
@@ -80,13 +79,14 @@ namespace Task2
             string[] players = new string[] { "X", "O" };
             Console.WriteLine("Вы играете против другого игрока.");
             GameBoxDraw(gamebox);
+
             for(int i=0; i < gamebox.Length; i++)
             {
                 var player = players[i % 2];
                 Console.WriteLine($"Ход {player}: ");
                 var move = Console.ReadLine();
-                int number = 0;
-                //проверка корректности ввода.
+                var number = 0;
+
                 if (int.TryParse(move, out number))
                 {
                     PlayerMove(gamebox, player, number);
@@ -101,14 +101,25 @@ namespace Task2
                     }
                     PlayerMove(gamebox, player, number);
                 }
+
+                if (CheckWin(gamebox, player))
+                {
+                    Console.WriteLine($"Победил игрок {player}!");
+                    break;
+                }
+                else if(i == gamebox.Length - 1)
+                {
+                    Console.WriteLine($"Игра окончена. Ничья.");
+                }
             }
+            PlayAgain(gamebox);
         }
 
         private static void PlayerMove(string[] gamebox, string player, int number)
         {
             if (number >= 1 && number <= 9)
             {
-                while (gamebox[number - 1] != null)         //проверка того, что клетка пустая
+                while (gamebox[number - 1] != null)         
                 {
                     Console.Write($"Клетка уже занята!\n");
                     Console.WriteLine($"Ход {player}: ");
@@ -123,13 +134,7 @@ namespace Task2
                 {
                     gamebox[number - 1] = player;
                 }
-                //проверка выигрышная ситуация или нет, если нет, то продолжаем играть
                 GameBoxDraw(gamebox);
-                if (CheckWin(gamebox, player))
-                {
-                    Console.WriteLine($"Победил игрок {player}!");
-                    //PlayAgain(gamebox);
-                }
             }
             else
             {
@@ -149,9 +154,9 @@ namespace Task2
             winSituations[0] = new int[] { 0, 1, 2 };
             winSituations[1] = new int[] { 3, 4, 5 };
             winSituations[2] = new int[] { 6, 7, 8 };
-            winSituations[3] = new int[] { 0, 3, 7 };
-            winSituations[4] = new int[] { 2, 5, 8 };
-            winSituations[5] = new int[] { 3, 6, 9 };
+            winSituations[3] = new int[] { 0, 3, 6 };
+            winSituations[4] = new int[] { 1, 4, 7 };
+            winSituations[5] = new int[] { 2, 5, 8 };
             winSituations[6] = new int[] { 0, 4, 8 };
             winSituations[7] = new int[] { 2, 4, 6 };
             var result = false; 
