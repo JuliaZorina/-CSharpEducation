@@ -18,17 +18,7 @@ namespace Task2
             if (playersType == "y")
             {
                 TwoPlayersMode(gamebox);
-                Console.WriteLine("Хотите сыграть еще? [y/n]");
-                var playAgain = Console.ReadLine();
-                if (playAgain == "y")
-                {
-                    for (int i = 0; i < gamebox.Length; i++)
-                    {
-                        gamebox[i] = null;
-                    }
-                }
-                else
-                    Console.WriteLine("Выход из игры...");
+                PlayAgain(gamebox);
 
             }
             else if(playersType == "n"){
@@ -40,6 +30,22 @@ namespace Task2
                 Console.WriteLine("Введено некорректное значение.");
             }
         }
+
+        private static void PlayAgain(string[] gamebox)
+        {
+            Console.WriteLine("Хотите сыграть еще? [y/n]");
+            var playAgain = Console.ReadLine();
+            if (playAgain == "y")
+            {
+                for (int i = 0; i < gamebox.Length; i++)
+                {
+                    gamebox[i] = null;
+                }
+            }
+            else
+                Console.WriteLine("Выход из игры...");
+        }
+
         public static void GameBoxDraw(string[] gamebox)
         {
             Console.WriteLine("---------------");
@@ -49,19 +55,26 @@ namespace Task2
                 {
                     if (gamebox[i * 3 + j] == null)
                     {
+                        Console.BackgroundColor = ConsoleColor.Black;
                         Console.Write($"| {i*3+j+1} |");
                     }
                     else
                     {
-                        Console.Write($"| {gamebox[i * 3 + j]} |");
+                        Console.Write($"| ");
+                        if(gamebox[i * 3 + j] == "X")
+                        {
+                            Console.BackgroundColor = ConsoleColor.Blue;
+                        }
+                        else Console.BackgroundColor = ConsoleColor.Red;
+                        Console.Write($"{gamebox[i * 3 + j]}");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write($" |");
                     }
-                    
                 }
-
                 Console.WriteLine("\n---------------");
-
             }
         }
+
         public static void TwoPlayersMode(string[] gamebox)
         {
             string[] players = new string[] { "X", "O" };
@@ -69,13 +82,29 @@ namespace Task2
             GameBoxDraw(gamebox);
             for(int i=0; i < gamebox.Length; i++)
             {
-                    Console.WriteLine($"Ход {players[i%2]}: ");
-                    var move = Console.ReadLine();
-                    //проверка корректности ввода.
-                    //проверка того, что клетка пустая
-                    gamebox[int.Parse(move)-1] = players[i%2];
-                    //проверка выигрышная ситуация или нет, если нет, то продолжаем играть
-                    GameBoxDraw(gamebox);
+                Console.WriteLine($"Ход {players[i%2]}: ");
+                var move = Console.ReadLine();
+                int number;
+                //проверка корректности ввода.
+                if (int.TryParse(move, out number))
+                {
+
+                }
+
+                //проверка того, что клетка пустая
+                while(gamebox[int.Parse(move) - 1] != null)
+                {
+                    Console.Write($"Клетка уже занята!\n");
+                    Console.WriteLine($"Ход {players[i % 2]}: ");
+                    move = Console.ReadLine();
+                }
+                if (gamebox[int.Parse(move)-1] == null)
+                {
+                    gamebox[int.Parse(move) - 1] = players[i % 2];
+                }
+                
+                //проверка выигрышная ситуация или нет, если нет, то продолжаем играть
+                GameBoxDraw(gamebox);
             }
             
         }
