@@ -14,18 +14,20 @@ namespace Task2
             string[] gamebox = new string[9];
             Console.WriteLine("Хотите сыграть против другого игрока? [y/n]");
             var playersType = Console.ReadLine();
-            Console.WriteLine("Для того, чтобы выбрать клетку поля, куда вы хотите сходить\n нажмите кнопку с соответствующим числом.");
+            
             if (playersType == "y")
             {
+                Console.WriteLine("Для того, чтобы выбрать клетку поля, куда вы хотите сходить\nнажмите кнопку с соответствующим числом.");
                 TwoPlayersMode(gamebox);
             }
             else if(playersType == "n"){
-                Console.WriteLine("Вы играете против бота. Вы ходите Х. Ход Х: ");
-                GameBoxDraw(gamebox);
+                Console.WriteLine("Для того, чтобы выбрать клетку поля, куда вы хотите сходить\nнажмите кнопку с соответствующим числом.");
+                OnePlayerMode(gamebox);
             }
             else
             {
                 Console.WriteLine("Введено некорректное значение.");
+                
             }
         }
 
@@ -115,6 +117,57 @@ namespace Task2
             PlayAgain(gamebox);
         }
 
+        public static void OnePlayerMode(string[] gamebox)
+        {
+            string[] players = new string[] { "X", "O" };
+            Console.WriteLine("Вы играете против бота. Вы играете за X");
+            GameBoxDraw(gamebox);
+
+            for (int i = 0; i < gamebox.Length; i++)
+            {
+                var player = players[i % 2];
+                Console.WriteLine($"Ход {player}: ");
+                if(player == "X")
+                {
+                    var move = Console.ReadLine();
+                    var number = 0;
+
+                    if (int.TryParse(move, out number))
+                    {
+                        PlayerMove(gamebox, player, number);
+                    }
+                    else
+                    {
+                        Console.Write($"Введено неверное значение!\n");
+                        while (number == 0)
+                        {
+                            Console.WriteLine($"Ход {player}: ");
+                            int.TryParse(Console.ReadLine(), out number);
+                        }
+                        PlayerMove(gamebox, player, number);
+                    }
+                }
+                else
+                {
+                    var rnd = new Random();
+                    var move = rnd.Next(1,9);
+                    Console.WriteLine(move);
+                    BotMove(gamebox, player, move, rnd);
+                }
+                if (CheckWin(gamebox, player))
+                {
+                    Console.WriteLine($"Победил игрок {player}!");
+                    break;
+                }
+                else if (i == gamebox.Length - 1)
+                {
+                    Console.WriteLine($"Игра окончена. Ничья.");
+                }
+
+            }
+            PlayAgain(gamebox);
+        }
+
         private static void PlayerMove(string[] gamebox, string player, int number)
         {
             if (number >= 1 && number <= 9)
@@ -145,6 +198,24 @@ namespace Task2
                     int.TryParse(Console.ReadLine(), out number);
                 }
                 PlayerMove(gamebox, player, number);
+            }
+        }
+
+        private static void BotMove(string[] gamebox, string player, int number, Random rnd)
+        {
+            if (number >= 1 && number <= 9)
+            {
+                while (gamebox[number - 1] != null)
+                {
+                    Console.Write($"Клетка уже занята!\n");
+                    number = rnd.Next(1, 9);
+                    Console.WriteLine($"Ход {player}: {number}");
+                }
+                if (gamebox[number - 1] == null)
+                {
+                    gamebox[number - 1] = player;
+                }
+                GameBoxDraw(gamebox);
             }
         }
 
