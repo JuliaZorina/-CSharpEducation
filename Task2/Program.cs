@@ -22,7 +22,7 @@ namespace Task2
 
             }
             else if(playersType == "n"){
-                Console.WriteLine("Вы играете против компютера. Вы ходите Х. Ход Х: ");
+                Console.WriteLine("Вы играете против бота. Вы ходите Х. Ход Х: ");
                 GameBoxDraw(gamebox);
             }
             else
@@ -82,59 +82,92 @@ namespace Task2
             GameBoxDraw(gamebox);
             for(int i=0; i < gamebox.Length; i++)
             {
-                Console.WriteLine($"Ход {players[i%2]}: ");
+                var player = players[i % 2];
+                Console.WriteLine($"Ход {player}: ");
                 var move = Console.ReadLine();
                 int number = 0;
                 //проверка корректности ввода.
                 if (int.TryParse(move, out number))
                 {
-                    PlayerMove(gamebox, players, i, number);
+                    PlayerMove(gamebox, player, number);
                 }
                 else
                 {
                     Console.Write($"Введено неверное значение!\n");
                     while (number == 0)
                     {
-                        Console.WriteLine($"Ход {players[i % 2]}: ");
+                        Console.WriteLine($"Ход {player}: ");
                         int.TryParse(Console.ReadLine(), out number);
                     }
-                    PlayerMove(gamebox, players, i, number);
+                    PlayerMove(gamebox, player, number);
                 }
             }
         }
 
-        private static void PlayerMove(string[] gamebox, string[] players, int i, int number)
+        private static void PlayerMove(string[] gamebox, string player, int number)
         {
             if (number >= 1 && number <= 9)
             {
                 while (gamebox[number - 1] != null)         //проверка того, что клетка пустая
                 {
                     Console.Write($"Клетка уже занята!\n");
-                    Console.WriteLine($"Ход {players[i % 2]}: ");
+                    Console.WriteLine($"Ход {player}: ");
                     int.TryParse(Console.ReadLine(), out number);
                     while (!(number >= 1 && number <= 9))
                     {
-                        Console.WriteLine($"Ход {players[i % 2]}: ");
+                        Console.WriteLine($"Ход {player}: ");
                         int.TryParse(Console.ReadLine(), out number);
                     }
                 }
                 if (gamebox[number - 1] == null)
                 {
-                    gamebox[number - 1] = players[i % 2];
+                    gamebox[number - 1] = player;
                 }
                 //проверка выигрышная ситуация или нет, если нет, то продолжаем играть
                 GameBoxDraw(gamebox);
+                if (CheckWin(gamebox, player))
+                {
+                    Console.WriteLine($"Победил игрок {player}!");
+                    //PlayAgain(gamebox);
+                }
             }
             else
             {
                 Console.Write($"Введено неверное значение!\n");
                 while (!(number >=1&&number<=9))
                 {
-                    Console.WriteLine($"Ход {players[i % 2]}: ");
+                    Console.WriteLine($"Ход {player}: ");
                     int.TryParse(Console.ReadLine(), out number);
                 }
-                PlayerMove(gamebox, players, i, number);
+                PlayerMove(gamebox, player, number);
             }
+        }
+
+        private static bool CheckWin(string[] gamebox, string player)
+        {
+            var winSituations = new int[8][];
+            winSituations[0] = new int[] { 0, 1, 2 };
+            winSituations[1] = new int[] { 3, 4, 5 };
+            winSituations[2] = new int[] { 6, 7, 8 };
+            winSituations[3] = new int[] { 0, 3, 7 };
+            winSituations[4] = new int[] { 2, 5, 8 };
+            winSituations[5] = new int[] { 3, 6, 9 };
+            winSituations[6] = new int[] { 0, 4, 8 };
+            winSituations[7] = new int[] { 2, 4, 6 };
+            var result = false; 
+
+            for(int i=0;i<winSituations.GetLength(0);i++)
+            {
+                if(
+                    (gamebox[winSituations[i][0]] != null)&& (gamebox[winSituations[i][0]].Equals(player))
+                    && (gamebox[winSituations[i][1]] != null) && (gamebox[winSituations[i][1]].Equals(player))
+                    && (gamebox[winSituations[i][2]] != null)&&(gamebox[winSituations[i][2]].Equals(player))
+                    )
+                {
+                    result = true;
+                }
+            }
+            return result;
         }
     }
 }
