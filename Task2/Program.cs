@@ -84,29 +84,57 @@ namespace Task2
             {
                 Console.WriteLine($"Ход {players[i%2]}: ");
                 var move = Console.ReadLine();
-                int number;
+                int number = 0;
                 //проверка корректности ввода.
                 if (int.TryParse(move, out number))
                 {
-
+                    PlayerMove(gamebox, players, i, number);
                 }
+                else
+                {
+                    Console.Write($"Введено неверное значение!\n");
+                    while (number == 0)
+                    {
+                        Console.WriteLine($"Ход {players[i % 2]}: ");
+                        int.TryParse(Console.ReadLine(), out number);
+                    }
+                    PlayerMove(gamebox, players, i, number);
+                }
+            }
+        }
 
-                //проверка того, что клетка пустая
-                while(gamebox[int.Parse(move) - 1] != null)
+        private static void PlayerMove(string[] gamebox, string[] players, int i, int number)
+        {
+            if (number >= 1 && number <= 9)
+            {
+                while (gamebox[number - 1] != null)         //проверка того, что клетка пустая
                 {
                     Console.Write($"Клетка уже занята!\n");
                     Console.WriteLine($"Ход {players[i % 2]}: ");
-                    move = Console.ReadLine();
+                    int.TryParse(Console.ReadLine(), out number);
+                    while (!(number >= 1 && number <= 9))
+                    {
+                        Console.WriteLine($"Ход {players[i % 2]}: ");
+                        int.TryParse(Console.ReadLine(), out number);
+                    }
                 }
-                if (gamebox[int.Parse(move)-1] == null)
+                if (gamebox[number - 1] == null)
                 {
-                    gamebox[int.Parse(move) - 1] = players[i % 2];
+                    gamebox[number - 1] = players[i % 2];
                 }
-                
                 //проверка выигрышная ситуация или нет, если нет, то продолжаем играть
                 GameBoxDraw(gamebox);
             }
-            
+            else
+            {
+                Console.Write($"Введено неверное значение!\n");
+                while (!(number >=1&&number<=9))
+                {
+                    Console.WriteLine($"Ход {players[i % 2]}: ");
+                    int.TryParse(Console.ReadLine(), out number);
+                }
+                PlayerMove(gamebox, players, i, number);
+            }
         }
     }
 }
