@@ -27,7 +27,7 @@ namespace Task2
             else
             {
                 Console.WriteLine("Введено некорректное значение.");
-                
+                Game();
             }
         }
 
@@ -43,8 +43,16 @@ namespace Task2
                 }
                 Game();
             }
-            else
+            else if(playAgain == "n")
+            {
                 Console.WriteLine("Выход из игры...");
+            }
+            else
+            {
+                Console.WriteLine("Введено некорректное значение.");
+                PlayAgain(gamebox);
+            }
+                
         }
 
         public static void GameBoxDraw(string[] gamebox)
@@ -120,7 +128,7 @@ namespace Task2
         public static void OnePlayerMode(string[] gamebox)
         {
             string[] players = new string[] { "X", "O" };
-            Console.WriteLine("Вы играете против бота. Вы играете за X");
+            Console.WriteLine("Вы играете против бота. Вы играете за X.");
             GameBoxDraw(gamebox);
 
             for (int i = 0; i < gamebox.Length; i++)
