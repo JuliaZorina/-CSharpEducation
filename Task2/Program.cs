@@ -75,7 +75,7 @@ namespace Task2
                     else
                     {
                         Console.Write($"| ");
-                        if(gamebox[i * 3 + j] == "X")
+                        if(gamebox[i * 3 + j] == Player.X.ToString())
                         {
                             Console.BackgroundColor = ConsoleColor.Blue;
                         }
@@ -91,24 +91,17 @@ namespace Task2
 
         public static void TwoPlayersMode(string[] gamebox)
         {
-            //string[] players = new string[] { "X", "O" };
-            //var playerValue = new Player();
             Console.WriteLine("Вы играете против другого игрока.");
             GameBoxDraw(gamebox);
 
             for(int i=0; i < gamebox.Length; i++)
             {
-                //var player = players[i % 2];
                 var player = (Player)(i%2);
                 Console.WriteLine($"Ход {player}: ");
                 var move = Console.ReadLine();
                 var number = 0;
 
-                if (int.TryParse(move, out number))
-                {
-                    PlayerMove(gamebox, player, number);
-                }
-                else
+                if (!int.TryParse(move, out number))
                 {
                     Console.Write($"Введено неверное значение!\n");
                     while (number == 0)
@@ -116,8 +109,8 @@ namespace Task2
                         Console.WriteLine($"Ход {player}: ");
                         int.TryParse(Console.ReadLine(), out number);
                     }
-                    PlayerMove(gamebox, player, number);
                 }
+                PlayerMove(gamebox, player, number);
 
                 if (CheckWin(gamebox, player))
                 {
@@ -134,25 +127,19 @@ namespace Task2
 
         public static void OnePlayerMode(string[] gamebox)
         {
-            //string[] players = new string[] { "X", "O" };
             Console.WriteLine("Вы играете против бота. Вы играете за X.");
             GameBoxDraw(gamebox);
 
             for (int i = 0; i < gamebox.Length; i++)
             {
-                //var player = players[i % 2];
                 var player = (Player)(i % 2);
                 Console.WriteLine($"Ход {player}: ");
-                if(player.ToString() == "X")
+                if(player == Player.X)
                 {
                     var move = Console.ReadLine();
                     var number = 0;
 
-                    if (int.TryParse(move, out number))
-                    {
-                        PlayerMove(gamebox, player, number);
-                    }
-                    else
+                    if (!int.TryParse(move, out number))
                     {
                         Console.Write($"Введено неверное значение!\n");
                         while (number == 0)
@@ -160,8 +147,9 @@ namespace Task2
                             Console.WriteLine($"Ход {player}: ");
                             int.TryParse(Console.ReadLine(), out number);
                         }
-                        PlayerMove(gamebox, player, number);
                     }
+                    PlayerMove(gamebox, player, number);
+
                 }
                 else
                 {
@@ -195,6 +183,7 @@ namespace Task2
                     int.TryParse(Console.ReadLine(), out number);
                     while (!(number >= 1 && number <= 9))
                     {
+                        Console.Write($"Введено неверное значение!\n");
                         Console.WriteLine($"Ход {player}: ");
                         int.TryParse(Console.ReadLine(), out number);
                     }
@@ -207,9 +196,10 @@ namespace Task2
             }
             else
             {
-                Console.Write($"Введено неверное значение!\n");
+                
                 while (!(number >=1&&number<=9))
                 {
+                    Console.Write($"Введено неверное значение!\n");
                     Console.WriteLine($"Ход {player}: ");
                     int.TryParse(Console.ReadLine(), out number);
                 }
