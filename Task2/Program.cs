@@ -8,6 +8,11 @@ namespace Task2
         {
             Game();
         }
+        public enum Player
+        {
+            X = 0,
+            O = 1
+        }
 
         public static void Game()
         {
@@ -86,13 +91,15 @@ namespace Task2
 
         public static void TwoPlayersMode(string[] gamebox)
         {
-            string[] players = new string[] { "X", "O" };
+            //string[] players = new string[] { "X", "O" };
+            //var playerValue = new Player();
             Console.WriteLine("Вы играете против другого игрока.");
             GameBoxDraw(gamebox);
 
             for(int i=0; i < gamebox.Length; i++)
             {
-                var player = players[i % 2];
+                //var player = players[i % 2];
+                var player = (Player)(i%2);
                 Console.WriteLine($"Ход {player}: ");
                 var move = Console.ReadLine();
                 var number = 0;
@@ -127,15 +134,16 @@ namespace Task2
 
         public static void OnePlayerMode(string[] gamebox)
         {
-            string[] players = new string[] { "X", "O" };
+            //string[] players = new string[] { "X", "O" };
             Console.WriteLine("Вы играете против бота. Вы играете за X.");
             GameBoxDraw(gamebox);
 
             for (int i = 0; i < gamebox.Length; i++)
             {
-                var player = players[i % 2];
+                //var player = players[i % 2];
+                var player = (Player)(i % 2);
                 Console.WriteLine($"Ход {player}: ");
-                if(player == "X")
+                if(player.ToString() == "X")
                 {
                     var move = Console.ReadLine();
                     var number = 0;
@@ -176,7 +184,7 @@ namespace Task2
             PlayAgain(gamebox);
         }
 
-        private static void PlayerMove(string[] gamebox, string player, int number)
+        private static void PlayerMove(string[] gamebox, Player player, int number)
         {
             if (number >= 1 && number <= 9)
             {
@@ -193,7 +201,7 @@ namespace Task2
                 }
                 if (gamebox[number - 1] == null)
                 {
-                    gamebox[number - 1] = player;
+                    gamebox[number - 1] = player.ToString();
                 }
                 GameBoxDraw(gamebox);
             }
@@ -209,7 +217,7 @@ namespace Task2
             }
         }
 
-        private static void BotMove(string[] gamebox, string player, int number, Random rnd)
+        private static void BotMove(string[] gamebox, Player player, int number, Random rnd)
         {
             if (number >= 1 && number <= 9)
             {
@@ -221,13 +229,13 @@ namespace Task2
                 }
                 if (gamebox[number - 1] == null)
                 {
-                    gamebox[number - 1] = player;
+                    gamebox[number - 1] = player.ToString();
                 }
                 GameBoxDraw(gamebox);
             }
         }
 
-        private static bool CheckWin(string[] gamebox, string player)
+        private static bool CheckWin(string[] gamebox, Player player)
         {
             var winSituations = new int[8][];
             winSituations[0] = new int[] { 0, 1, 2 };
@@ -243,9 +251,9 @@ namespace Task2
             for(int i=0;i<winSituations.GetLength(0);i++)
             {
                 if(
-                    (gamebox[winSituations[i][0]] != null)&& (gamebox[winSituations[i][0]].Equals(player))
-                    && (gamebox[winSituations[i][1]] != null) && (gamebox[winSituations[i][1]].Equals(player))
-                    && (gamebox[winSituations[i][2]] != null)&&(gamebox[winSituations[i][2]].Equals(player))
+                    (gamebox[winSituations[i][0]] != null)&& (gamebox[winSituations[i][0]].Equals(player.ToString()))
+                    && (gamebox[winSituations[i][1]] != null) && (gamebox[winSituations[i][1]].Equals(player.ToString()))
+                    && (gamebox[winSituations[i][2]] != null)&&(gamebox[winSituations[i][2]].Equals(player.ToString()))
                     )
                 {
                     result = true;
