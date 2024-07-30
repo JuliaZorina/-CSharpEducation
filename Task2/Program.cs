@@ -93,10 +93,12 @@ namespace Task2
         {
             Console.WriteLine("Вы играете против другого игрока.");
             GameBoxDraw(gamebox);
+            var rnd = new Random();
+            var player = (Player)(rnd.Next(0,2));
 
-            for(int i=0; i < gamebox.Length; i++)
+            for (int i=0; i < gamebox.Length; i++)
             {
-                var player = (Player)(i%2);
+                
                 Console.WriteLine($"Ход {player}: ");
                 var move = Console.ReadLine();
                 var number = 0;
@@ -111,7 +113,7 @@ namespace Task2
                     }
                 }
                 PlayerMove(gamebox, player, number);
-
+                
                 if (CheckWin(gamebox, player))
                 {
                     Console.WriteLine($"Победил игрок {player}!");
@@ -121,20 +123,33 @@ namespace Task2
                 {
                     Console.WriteLine($"Игра окончена. Ничья.");
                 }
+                else
+                {
+                    if (player == Player.X)
+                    {
+                        player = Player.O;
+                    }
+                    else
+                    {
+                        player = Player.X;
+                    }
+                }
             }
             PlayAgain(gamebox);
         }
 
         public static void OnePlayerMode(string[] gamebox)
         {
-            Console.WriteLine("Вы играете против бота. Вы играете за X.");
+            var rnd = new Random();
+            var player = (Player)(rnd.Next(0,2));
+            Console.WriteLine($"Вы играете против бота. Вы играете за {player}.");
+            var userPlayer = player;
             GameBoxDraw(gamebox);
 
             for (int i = 0; i < gamebox.Length; i++)
             {
-                var player = (Player)(i % 2);
                 Console.WriteLine($"Ход {player}: ");
-                if(player == Player.X)
+                if(player == userPlayer)
                 {
                     var move = Console.ReadLine();
                     var number = 0;
@@ -153,11 +168,11 @@ namespace Task2
                 }
                 else
                 {
-                    var rnd = new Random();
                     var move = rnd.Next(1,9);
                     Console.WriteLine(move);
                     BotMove(gamebox, player, move, rnd);
                 }
+                
                 if (CheckWin(gamebox, player))
                 {
                     Console.WriteLine($"Победил игрок {player}!");
@@ -166,6 +181,17 @@ namespace Task2
                 else if (i == gamebox.Length - 1)
                 {
                     Console.WriteLine($"Игра окончена. Ничья.");
+                }
+                else
+                {
+                    if (player == Player.X)
+                    {
+                        player = Player.O;
+                    }
+                    else
+                    {
+                        player = Player.X;
+                    }
                 }
 
             }
