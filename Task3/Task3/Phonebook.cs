@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Task3
 {
   class Phonebook
   {
     private static Phonebook phonebook;
-    
+
     private Phonebook() 
     { }
 
-    public static Phonebook GetPhonebook()
+    public static Phonebook GetPhonebook(string path)
     {
       if(phonebook==null)
         phonebook = new Phonebook();//Вызывает приватный конструктор. Должен вернуть объект класса Phonebook,
@@ -17,37 +19,43 @@ namespace Task3
       return phonebook;
     }
 
-    public static void CreateAbonent()//Должен добавлять в List<Abonent> нового абонента.
+    const string path = @"..\..\phonebook.txt";
+
+    public List<Abonent> abonent = GetAbonents(GetStrings(path));
+
+    private static List<string> GetStrings(string path)
     {
-      var abonent = new Abonent();
-      try
+      FileInfo file = new FileInfo(path);
+
+      if (!file.Exists)
+        file.Create();
+
+      var abonentsStrings = new List<string>();
+
+      using (StreamReader sr = new StreamReader(path))
       {
-        Console.WriteLine("Введите номер телефона");
-        abonent.PhoneNumber = Console.ReadLine();
-        Console.WriteLine("Введите имя абонента");
-        abonent.PhoneNumber = Console.ReadLine();
-        
+        string line;
+
+        while ((line = sr.ReadLine()) != null)
+        {
+          abonentsStrings.Add(line);
+        }
       }
-      catch
+      return abonentsStrings;
+    }
+
+    private static List<Abonent> GetAbonents(List<string> abonentsStrings)
+    {
+      var abonents = new List<Abonent>();
+      foreach (var str in abonentsStrings)
       {
-        Console.WriteLine();
+        var abonentInfo = str.Split(' ');
+        var abonent = new Abonent();
+        abonent.PhoneNumber = abonentInfo[0];
+        abonent.Name = abonentInfo[1];
+        abonents.Add(abonent);
       }
-      
-    }
-
-    public static void ReadAbonent()//Должен находить абонента по номеру телефона или номер телефона по имени абонента.
-    {
-
-    }
-
-    public static void UpdateAbonent()//Должен обновлять данные абонента по номеру телефона или по имени абонента.
-    {
-
-    }
-
-    public static void DeleteAbonent()//Удалить всю информацию об абоненте.
-    {
-
-    }
+      return abonents;
+    }    
   }
 }
