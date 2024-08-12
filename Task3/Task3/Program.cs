@@ -6,7 +6,9 @@ namespace Task3
   {
     static void Main(string[] args)
     {
-      
+      const string path = @"..\..\phonebook.txt";
+
+      Phonebook phonebook = Phonebook.getPhonebook(path);
     }        
   }
 }

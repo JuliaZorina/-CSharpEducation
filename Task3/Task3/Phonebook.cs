@@ -8,20 +8,22 @@ namespace Task3
   {
     private static Phonebook phonebook;
 
-    private Phonebook() 
-    { }
+    public string Path { get; private set; }
 
-    public static Phonebook GetPhonebook(string path)
+    private Phonebook(string path) 
+    { 
+      this.Path = path;
+    }
+
+    public static Phonebook getPhonebook(string path)
     {
       if(phonebook==null)
-        phonebook = new Phonebook();//Вызывает приватный конструктор. Должен вернуть объект класса Phonebook,
+        phonebook = new Phonebook(path);//Вызывает приватный конструктор. Должен вернуть объект класса Phonebook,
                                         //в котором лежит List<Abonent>
       return phonebook;
     }
 
-    const string path = @"..\..\phonebook.txt";
-
-    public List<Abonent> abonent = GetAbonents(GetStrings(path));
+    public List<Abonent> abonent = GetAbonents(GetStrings(phonebook.Path));
 
     private static List<string> GetStrings(string path)
     {
