@@ -87,7 +87,7 @@ namespace Task3
           abonentInfo.ReadAbonent(abonent, phonebook.Path);
           break;
         case "3":
-          abonentInfo.UpdateAbonent(abonent);
+          abonentInfo.UpdateAbonent(abonent, phonebook.Path);
           break;
         case "4":
           abonentInfo.DeleteAbonent(abonent);

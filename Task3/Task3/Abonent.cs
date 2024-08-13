@@ -320,7 +320,7 @@ namespace Task3
      * В List<Abonent> находить индекс экземпляра класса с введенным значением PhoneNumber.
      * Обновить эти значения в тектовом файле.
      */
-    public void UpdateAbonent(List<Abonent> abonent)//Должен обновлять данные абонента по номеру телефона или по имени абонента.
+    public void UpdateAbonent(List<Abonent> abonent, string path)//Должен обновлять данные абонента по номеру телефона или по имени абонента.
     {
       //ReadAbonent(abonent);
       Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
@@ -345,13 +345,26 @@ namespace Task3
               if (!abonent.Exists(a => a.PhoneNumber == long.Parse(number)))
               {
                 Console.WriteLine("Абонента с таким номером не существует в телефонной книге");
-                UpdateAbonent(abonent);
+                UpdateAbonent(abonent, path);
               } 
               else
               {
+                Console.WriteLine("Абонент найден");
                 updateNumber = long.Parse(number);
-                //после ввода номера вызвать метод, который обновит данные в листе и затем перепишет данные в файле
-                //и после успешного обновления данных возврат в меню
+                var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == updateNumber));//находит индекс элемента, который нужно заменить
+                Console.WriteLine("Введите новое значение имени");
+                //добавить проверки на пустые строки и некорректный ввод
+                abonent[index].Name = Console.ReadLine();
+                Console.WriteLine("Введите новое значение для номера телефона");
+                abonent[index].PhoneNumber = long.Parse(Console.ReadLine());
+
+                  using (StreamWriter sw = File.CreateText(path))
+                  {
+                  foreach(var abonentInfo in abonent)
+                    sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
+                  }
+                Console.WriteLine($"Данные о пользователе с именем {abonent[index].Name} и номером телефона {abonent[index].PhoneNumber} " +
+                  $"успешно обновлены");
                 Phonebook.Menu(abonent);
               }
             }
