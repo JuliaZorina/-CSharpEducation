@@ -22,7 +22,7 @@ namespace Task3
       return phonebook;
     }
 
-    public List<Abonent> abonent = GetAbonents(GetFileInfo(phonebook.Path));
+    public List<Abonent> abonent = new List<Abonent>();
 
     /// <summary>
     /// Метод принимает путь к файлу с телефонной книгой и преобразует его в коллекцию строк.
@@ -54,19 +54,18 @@ namespace Task3
     /// Преобразует коллекцию строк в коллекцию экземпляров класса Abonent.
     /// </summary>
     /// <param name="abonentsStrings"></param>
-    /// <returns>Коллекция экземпляров класса абонент.</returns>
-    private static List<Abonent> GetAbonents(List<string> abonentsStrings)
+    /// <returns></returns>
+    private static void GetAbonents(List<string> abonentsStrings)
     {
-      var abonents = new List<Abonent>();
+      phonebook.abonent = new List<Abonent>();
       foreach (var str in abonentsStrings)
       {
         var abonentInfo = str.Split(' ');
         var abonent = new Abonent();
         abonent.PhoneNumber = abonentInfo[0];
         abonent.Name = abonentInfo[1];
-        abonents.Add(abonent);
+        phonebook.abonent.Add(abonent);
       }
-      return abonents;
     }    
   }
 }
