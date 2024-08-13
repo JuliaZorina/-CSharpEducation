@@ -19,11 +19,12 @@ namespace Task3
     {
       if(phonebook==null)
         phonebook = new Phonebook(path);//Вызывает приватный конструктор. 
+      GetAbonents(GetFileInfo(phonebook.Path));
       return phonebook;
     }
 
     public List<Abonent> abonent = new List<Abonent>();
-
+    
     /// <summary>
     /// Метод принимает путь к файлу с телефонной книгой и преобразует его в коллекцию строк.
     /// </summary>
@@ -57,7 +58,6 @@ namespace Task3
     /// <returns></returns>
     private static void GetAbonents(List<string> abonentsStrings)
     {
-      phonebook.abonent = new List<Abonent>();
       foreach (var str in abonentsStrings)
       {
         var abonentInfo = str.Split(' ');

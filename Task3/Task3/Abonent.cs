@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Task3
 {
@@ -46,27 +47,77 @@ namespace Task3
       }
     }
 
-    public void CreateAbonent()//Должен добавлять в List<Abonent> нового абонента.
+    public void CreateAbonent(List<Abonent> abonent)//Должен добавлять в List<Abonent> нового абонента.
     {
-      var abonent = new Abonent();
+      var abonentInfo = new Abonent();
       try
       {
         Console.WriteLine("Введите номер телефона");
-        abonent.PhoneNumber = Console.ReadLine();
+        abonentInfo.PhoneNumber = Console.ReadLine();
         Console.WriteLine("Введите имя абонента");
-        abonent.Name = Console.ReadLine();
-
+        abonentInfo.Name = Console.ReadLine();
+        //Добавить проверку на то, существует такой абонент уже или нет (проверка по номеру телефона)
+        abonent.Add(abonentInfo);
       }
       catch
       {
-        Console.WriteLine();
+        Console.WriteLine("Произошла ошибка при добавлении нового абонента в телефонную книгу. Попытайтесь еще раз.");
+      }
+    }
+
+    public static void AddNewAbonent(List<Abonent> abonent)
+    {
+      //Проверить есть ли новые абоненты и если есть, то добавить их
+    }
+
+    public void ReadAbonent(List<Abonent> abonent)//Должен находить абонента по номеру телефона или номер телефона по имени абонента.
+    {
+      Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
+        $"Нажмите клавишу 'н', чтобы найти абонента по номеру телефона.");
+      var searchMethod = (Console.ReadLine()).ToLower();
+      switch (searchMethod)
+      {
+        case "и":
+          FindAbonent(abonent);
+          break;
+        case "н":
+          //Поиск по номеру. FindAll
+          break;
+        default:
+          Console.WriteLine("Введено недопустимое значение");
+          break;
       }
 
     }
 
-    public void ReadAbonent()//Должен находить абонента по номеру телефона или номер телефона по имени абонента.
+    private void FindAbonent(List<Abonent> abonent)
     {
+      //нужно по имени/номеру найти индекс листа и вывести номер/имя соответственно
+      Console.WriteLine("Введите имя абонента для поиска.");
+      var name = Console.ReadLine();
+      var foundAbonents = abonent.FindAll(a => a.Name == name);
+      if (foundAbonents.Count == 0)
+      {
+        Console.WriteLine($"Абонент с именем {name} не существует в телефонной книге. Добавить нового абонента? [y/n]");
+        var addNew = Console.ReadLine();
+        if (addNew == "y")
+        {
 
+        }
+        else if(addNew == "n")
+        {
+
+        }
+        else
+        {
+          Console.WriteLine("Было введено некорректное значение.")
+        }
+      }
+        
+      foreach(var foundAbonent in foundAbonents)
+      {
+        Console.WriteLine($"{foundAbonent.Name} {foundAbonent.PhoneNumber}");
+      }
     }
 
     public void UpdateAbonent()//Должен обновлять данные абонента по номеру телефона или по имени абонента.

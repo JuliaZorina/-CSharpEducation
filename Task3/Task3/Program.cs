@@ -9,11 +9,12 @@ namespace Task3
       const string path = @"..\..\phonebook.txt";
 
       Phonebook phonebook = Phonebook.getPhonebook(path);
+      
 
-      Menu();
+      Menu(phonebook);
 
     }    
-    private static void Menu()
+    private static void Menu(Phonebook phonebook)
     {
       var abonent = new Abonent();
 
@@ -26,10 +27,10 @@ namespace Task3
       switch (menu)
       {
         case "1":
-          abonent.CreateAbonent();
+          abonent.CreateAbonent(phonebook.abonent);
           break;
         case "2":
-          abonent.ReadAbonent();
+          abonent.ReadAbonent(phonebook.abonent);
           break;
         case "3":
           abonent.UpdateAbonent();
@@ -38,31 +39,32 @@ namespace Task3
           abonent.DeleteAbonent();
           break;
         case "5":
-          Exit();
+          Exit(phonebook);
           break;
         default:
           Console.WriteLine("Введено некорректное значение!");
-          Menu();
+          Menu(phonebook);
           break;
       }
     }
     
-    private static void Exit()
+    private static void Exit(Phonebook phonebook)
     {
       Console.WriteLine("Вы действительно хотите выйти из программы? [y/n]");
       var exit = Console.ReadLine();
       if (exit == "y")
       {
+        Abonent.AddNewAbonent(phonebook.abonent);
         Console.WriteLine("Выход из программы...");
       }
       else if(exit == "n")
       {
-        Menu();
+        Menu(phonebook);
       }
       else
       {
         Console.WriteLine("Введено некорректное значение!");
-        Exit();
+        Exit(phonebook);
       }
     }
   }
