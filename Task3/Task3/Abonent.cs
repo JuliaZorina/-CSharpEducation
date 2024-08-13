@@ -132,6 +132,7 @@ namespace Task3
       {
         case "и":
           FindByName(abonent);
+          Phonebook.Menu(abonent);
           break;
         case "н":
           FindByNumber(abonent);
@@ -140,7 +141,6 @@ namespace Task3
           Console.WriteLine("Введено недопустимое значение");
           break;
       }
-
     }
 
     private void FindByNumber(List<Abonent> abonent)

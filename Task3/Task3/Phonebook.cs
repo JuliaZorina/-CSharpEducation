@@ -66,6 +66,62 @@ namespace Task3
         abonent.Name = abonentInfo[1];
         phonebook.abonent.Add(abonent);
       }
-    }    
+    }
+
+    public static void Menu(List<Abonent> abonent)
+    {
+      var abonentInfo = new Abonent();
+
+      Console.WriteLine("Нажмите 1 для добавления нового контакта.\n" +
+        "Нажмите 2 для просмотра уже существующего контакта.\n" +
+        "Нажмите 3 для редактирования уже существующего контакта.\n" +
+        "Нажмите 4 для удаления контакта.\n" +
+        "Нажмите 5 для выхода из программы.");
+
+      var menu = Console.ReadLine();
+
+      switch (menu)
+      {
+        case "1":
+          abonentInfo.CreateAbonent(abonent);
+          break;
+        case "2":
+          abonentInfo.ReadAbonent(abonent);
+          break;
+        case "3":
+          abonentInfo.UpdateAbonent();
+          break;
+        case "4":
+          abonentInfo.DeleteAbonent();
+          break;
+        case "5":
+          Exit(abonent);
+          break;
+        default:
+          Console.WriteLine("Введено некорректное значение!");
+          Menu(abonent);
+          break;
+      }
+    }
+
+    private static void Exit(List<Abonent> abonent)
+    {
+      Console.WriteLine("Вы действительно хотите выйти из программы? [y/n]");
+      var exit = Console.ReadLine();
+      if (exit == "y")
+      {
+        Abonent.AddNewAbonent(abonent);
+        Console.WriteLine("Выход из программы...");
+      }
+      else if (exit == "n")
+      {
+        Menu(abonent);
+      }
+      else
+      {
+        Console.WriteLine("Введено некорректное значение!");
+        Exit(abonent);
+      }
+    }
   }
 }
