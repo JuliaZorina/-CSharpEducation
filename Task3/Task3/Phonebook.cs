@@ -18,14 +18,18 @@ namespace Task3
     public static Phonebook getPhonebook(string path)
     {
       if(phonebook==null)
-        phonebook = new Phonebook(path);//Вызывает приватный конструктор. Должен вернуть объект класса Phonebook,
-                                        //в котором лежит List<Abonent>
+        phonebook = new Phonebook(path);//Вызывает приватный конструктор. 
       return phonebook;
     }
 
-    public List<Abonent> abonent = GetAbonents(GetStrings(phonebook.Path));
+    public List<Abonent> abonent = GetAbonents(GetFileInfo(phonebook.Path));
 
-    private static List<string> GetStrings(string path)
+    /// <summary>
+    /// Метод принимает путь к файлу с телефонной книгой и преобразует его в коллекцию строк.
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns>Коллекция строк из считанного файла.</returns>
+    private static List<string> GetFileInfo(string path)
     {
       FileInfo file = new FileInfo(path);
 
@@ -46,6 +50,11 @@ namespace Task3
       return abonentsStrings;
     }
 
+    /// <summary>
+    /// Преобразует коллекцию строк в коллекцию экземпляров класса Abonent.
+    /// </summary>
+    /// <param name="abonentsStrings"></param>
+    /// <returns>Коллекция экземпляров класса абонент.</returns>
     private static List<Abonent> GetAbonents(List<string> abonentsStrings)
     {
       var abonents = new List<Abonent>();
