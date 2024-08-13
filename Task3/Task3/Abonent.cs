@@ -46,7 +46,7 @@ namespace Task3
       }
     }
 
-    public static void CreateAbonent()//Должен добавлять в List<Abonent> нового абонента.
+    public void CreateAbonent()//Должен добавлять в List<Abonent> нового абонента.
     {
       var abonent = new Abonent();
       try
@@ -64,17 +64,17 @@ namespace Task3
 
     }
 
-    public static void ReadAbonent()//Должен находить абонента по номеру телефона или номер телефона по имени абонента.
+    public void ReadAbonent()//Должен находить абонента по номеру телефона или номер телефона по имени абонента.
     {
 
     }
 
-    public static void UpdateAbonent()//Должен обновлять данные абонента по номеру телефона или по имени абонента.
+    public void UpdateAbonent()//Должен обновлять данные абонента по номеру телефона или по имени абонента.
     {
 
     }
 
-    public static void DeleteAbonent()//Удалить всю информацию об абоненте.
+    public void DeleteAbonent()//Удалить всю информацию об абоненте.
     {
 
     }
