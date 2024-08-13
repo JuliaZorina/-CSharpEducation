@@ -62,7 +62,7 @@ namespace Task3
       {
         var abonentInfo = str.Split(' ');
         var abonent = new Abonent();
-        abonent.PhoneNumber = abonentInfo[0];
+        abonent.PhoneNumber = long.Parse(abonentInfo[0]);
         abonent.Name = abonentInfo[1];
         phonebook.abonent.Add(abonent);
       }
