@@ -83,10 +83,10 @@ namespace Task3
       switch (menu)
       {
         case "1":
-          abonentInfo.CreateAbonent(abonent);
+          abonentInfo.CreateAbonent(abonent, phonebook.Path);
           break;
         case "2":
-          abonentInfo.ReadAbonent(abonent);
+          abonentInfo.ReadAbonent(abonent, phonebook.Path);
           break;
         case "3":
           abonentInfo.UpdateAbonent();
@@ -110,7 +110,6 @@ namespace Task3
       var exit = Console.ReadLine();
       if (exit == "y")
       {
-        Abonent.AddNewAbonent(abonent);
         Console.WriteLine("Выход из программы...");
       }
       else if (exit == "n")

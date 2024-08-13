@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Task3
 {
@@ -43,23 +44,41 @@ namespace Task3
     /// Метод для добавления нового абонента в телефонную книгу при помощи считывания строк из консоли.
     /// </summary>
     /// <param name="abonent"></param>
-    public void CreateAbonent(List<Abonent> abonent)//Должен добавлять в List<Abonent> нового абонента.
+    public void CreateAbonent(List<Abonent> abonent, string path)//Должен добавлять в List<Abonent> нового абонента.
     {
       var abonentInfo = new Abonent();
+      var foundAbonents = new List<Abonent>();
+
       try
       {
         Console.WriteLine("Введите номер телефона");
         var number = Console.ReadLine();
-        if (!string.IsNullOrEmpty(number))
+        if (string.IsNullOrEmpty(number))
         {
           throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
         }
         else
           abonentInfo.PhoneNumber = long.Parse(number);
+
         Console.WriteLine("Введите имя абонента");
         abonentInfo.Name = Console.ReadLine();
-        //Добавить проверку на то, существует такой абонент уже или нет (проверка по номеру телефона)
-        abonent.Add(abonentInfo);
+
+        foundAbonents = abonent.FindAll(a => a.PhoneNumber == long.Parse(number));
+
+        if (foundAbonents.Count == 0)
+        {
+          abonent.Add(abonentInfo);
+          using (StreamWriter sw = File.AppendText(path))
+          {
+            sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
+          }
+          Console.WriteLine($"Абонент '{abonentInfo.Name}' {abonentInfo.PhoneNumber} успешно добавлен в телефонную книгу.");
+        }
+        else
+        {
+          throw new Exception("Абонент с таким номером уже существует!");
+        }
+        Phonebook.Menu(abonent);
       }
       catch
       {
@@ -72,16 +91,31 @@ namespace Task3
     /// </summary>
     /// <param name="abonent"></param>
     /// <param name="phoneNumber"></param>
-    public void CreateAbonent(List<Abonent> abonent, long phoneNumber)//Должен добавлять в List<Abonent> нового абонента.
+    public void CreateAbonent(List<Abonent> abonent, long phoneNumber, string path)//Должен добавлять в List<Abonent> нового абонента.
     {
       var abonentInfo = new Abonent();
+      var foundAbonents = new List<Abonent>();
+
       try
       {
         abonentInfo.PhoneNumber = phoneNumber;
         Console.WriteLine("Введите имя абонента");
-        abonentInfo.Name = Console.ReadLine();
-        //Добавить проверку на то, существует такой абонент уже или нет (проверка по номеру телефона)
-        abonent.Add(abonentInfo);
+        abonentInfo.Name = Console.ReadLine(); 
+        foundAbonents = abonent.FindAll(a => a.PhoneNumber == phoneNumber);
+
+        if (foundAbonents.Count == 0)
+        {
+          abonent.Add(abonentInfo);
+          using (StreamWriter sw = File.AppendText(path))
+          {
+            sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
+          }
+        }
+        else
+        {
+          throw new Exception("Абонент с таким номером уже существует!");
+        }
+        Phonebook.Menu(abonent);
       }
       catch
       {
@@ -94,23 +128,37 @@ namespace Task3
     /// </summary>
     /// <param name="abonent"></param>
     /// <param name="phoneNumber"></param>
-    public void CreateAbonent(List<Abonent> abonent, string name)//Должен добавлять в List<Abonent> нового абонента.
+    public void CreateAbonent(List<Abonent> abonent, string name, string path)//Должен добавлять в List<Abonent> нового абонента.
     {
       var abonentInfo = new Abonent();
+      var foundAbonents = new List<Abonent>();
       try
       {
         Console.WriteLine("Введите номер телефона");
         var number = Console.ReadLine();
-        if (!string.IsNullOrEmpty(number))
+        if (string.IsNullOrEmpty(number))
         {
           throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
         }
         else
           abonentInfo.PhoneNumber = long.Parse(number);
+
         abonentInfo.Name = name;
-        //Добавить проверку на то, существует такой абонент уже или нет (проверка по номеру телефона)
-        abonent.Add(abonentInfo);
-        //выводить уведомление о том, что абонент был добавлен в телефонную книгу
+        foundAbonents = abonent.FindAll(a => a.PhoneNumber == phoneNumber);
+
+        if (foundAbonents.Count == 0)
+        {
+          abonent.Add(abonentInfo);
+          using (StreamWriter sw = File.AppendText(path))
+          {
+            sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
+          }
+        }
+        else
+        {
+          throw new Exception("Абонент с таким номером уже существует!");
+        }
+        Phonebook.Menu(abonent);
       }
       catch
       {
@@ -118,12 +166,7 @@ namespace Task3
       }
     }
 
-    public static void AddNewAbonent(List<Abonent> abonent)
-    {
-      //Проверить есть ли новые абоненты и если есть, то добавить их
-    }
-
-    public void ReadAbonent(List<Abonent> abonent)//Должен находить абонента по номеру телефона или номер телефона по имени абонента.
+    public void ReadAbonent(List<Abonent> abonent, string path)//Должен находить абонента по номеру телефона или номер телефона по имени абонента.
     {
       Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
         $"Нажмите клавишу 'н', чтобы найти абонента по номеру телефона.");
@@ -131,11 +174,12 @@ namespace Task3
       switch (searchMethod)
       {
         case "и":
-          FindByName(abonent);
+          FindByName(abonent, path);
           Phonebook.Menu(abonent);
           break;
         case "н":
-          FindByNumber(abonent);
+          FindByNumber(abonent, path);
+          Phonebook.Menu(abonent);
           break;
         default:
           Console.WriteLine("Введено недопустимое значение");
@@ -143,13 +187,13 @@ namespace Task3
       }
     }
 
-    private void FindByNumber(List<Abonent> abonent)
+    private void FindByNumber(List<Abonent> abonent, string path)
     {
       //нужно по имени/номеру найти индекс листа и вывести номер/имя соответственно
       var foundAbonents = new List<Abonent>();
       Console.WriteLine("Введите номер абонента для поиска.");
       var number = Console.ReadLine();
-      if (!string.IsNullOrEmpty(number))
+      if (string.IsNullOrEmpty(number))
       {
         throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
       }
@@ -164,11 +208,11 @@ namespace Task3
         var addNew = Console.ReadLine();
         if (addNew == "y")
         {
-
+          CreateAbonent(abonent, long.Parse(number), path);
         }
         else if(addNew == "n")
         {
-
+          Phonebook.Menu(abonent);
         }
         else
         {
@@ -181,7 +225,7 @@ namespace Task3
         Console.WriteLine($"{foundAbonent.Name} {foundAbonent.PhoneNumber}");
       }
     }
-    private void FindByName(List<Abonent> abonent)
+    private void FindByName(List<Abonent> abonent, string path)
     {
       //нужно по имени/номеру найти индекс листа и вывести номер/имя соответственно
       Console.WriteLine("Введите имя абонента для поиска.");
@@ -193,11 +237,11 @@ namespace Task3
         var addNew = Console.ReadLine();
         if (addNew == "y")
         {
-
+          CreateAbonent(abonent, name, path);
         }
         else if(addNew == "n")
         {
-
+          Phonebook.Menu(abonent);
         }
         else
         {
