@@ -44,9 +44,7 @@ namespace Task3
         string line;
 
         while ((line = sr.ReadLine()) != null)
-        {
           abonentsStrings.Add(line);
-        }
       }
       return abonentsStrings;
     }
@@ -89,10 +87,10 @@ namespace Task3
           abonentInfo.ReadAbonent(abonent, phonebook.Path);
           break;
         case "3":
-          abonentInfo.UpdateAbonent();
+          abonentInfo.UpdateAbonent(abonent);
           break;
         case "4":
-          abonentInfo.DeleteAbonent();
+          abonentInfo.DeleteAbonent(abonent);
           break;
         case "5":
           Exit(abonent);
@@ -109,13 +107,9 @@ namespace Task3
       Console.WriteLine("Вы действительно хотите выйти из программы? [y/n]");
       var exit = Console.ReadLine();
       if (exit == "y")
-      {
         Console.WriteLine("Выход из программы...");
-      }
       else if (exit == "n")
-      {
         Menu(abonent);
-      }
       else
       {
         Console.WriteLine("Введено некорректное значение!");
