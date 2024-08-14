@@ -257,29 +257,6 @@ namespace Task3
       }
     }
 
-    public void ReadAbonent(List<Abonent> abonent)
-    {
-      Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
-        $"Нажмите клавишу 'н', чтобы найти абонента по номеру телефона.");
-
-      var searchMethod = (Console.ReadLine()).ToLower();
-
-      switch (searchMethod)
-      {
-        case "и":
-          FindByName(abonent);
-          //Phonebook.Menu(abonent);
-          break;
-        case "н":
-          FindByNumber(abonent);
-          //Phonebook.Menu(abonent);
-          break;
-        default:
-          Console.WriteLine("Введено недопустимое значение");
-          break;
-      }
-    }
-
     private List<Abonent> FindByNumber(List<Abonent> abonent)
     {
       var foundAbonents = new List<Abonent>();
@@ -400,9 +377,77 @@ namespace Task3
         $"успешно обновлены");
     }
 
-    public void DeleteAbonent(List<Abonent> abonent)//Удалить всю информацию об абоненте.
+    public void DeleteAbonent(List<Abonent> abonent, string path)//Удалить всю информацию об абоненте.
     {
-      ReadAbonent(abonent);
+      Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
+        $"Нажмите клавишу 'н', чтобы найти абонента по номеру телефона.");
+
+      var searchMethod = (Console.ReadLine()).ToLower();
+      var foundAbonents = new List<Abonent>();
+
+      switch (searchMethod)
+      {
+        case "и":
+          foundAbonents = FindByName(abonent);
+          if (foundAbonents.Count > 1)
+          {
+            Console.WriteLine("Введите номер абонента, данные которого вы хотите удалить");
+            var number = Console.ReadLine();
+            if (string.IsNullOrEmpty(number))
+              throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
+            else
+            {
+              if (!abonent.Exists(a => a.PhoneNumber == long.Parse(number)))
+              {
+                Console.WriteLine("Абонента с таким номером не существует в телефонной книге");
+                DeleteAbonent(abonent, path);
+              }
+              else
+              {
+                Console.WriteLine("Абонент найден");
+                DeleteAbonentInfo(abonent, path, long.Parse(number));
+                Phonebook.Menu(abonent);
+              }
+            }
+          }
+          else if (foundAbonents.Count == 1)
+          {
+            Console.WriteLine("Абонент найден");
+            DeleteAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
+            Phonebook.Menu(abonent);
+          }
+          else
+            Phonebook.Menu(abonent);
+          break;
+        case "н":
+          foundAbonents = FindByNumber(abonent);
+          if (foundAbonents.Count == 1)
+          {
+            Console.WriteLine("Абонент найден");
+            DeleteAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
+            Phonebook.Menu(abonent);
+          }
+          else
+            Phonebook.Menu(abonent);
+          break;
+        default:
+          Console.WriteLine("Введено недопустимое значение");
+          Phonebook.Menu(abonent);
+          break;
+      }
+    }
+
+    private void DeleteAbonentInfo(List<Abonent> abonent, string path, long deleteNumber)
+    {
+      var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == deleteNumber));//находит индекс элемента, который нужно заменить
+      abonent.RemoveAt(index);
+
+      using (StreamWriter sw = File.CreateText(path))
+      {
+        foreach (var abonentInfo in abonent)
+          sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
+      }
+      Console.WriteLine($"Данные о пользователе с номером телефона {deleteNumber} были удалены");
     }
   }
 }

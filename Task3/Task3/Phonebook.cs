@@ -90,7 +90,7 @@ namespace Task3
           abonentInfo.UpdateAbonent(abonent, phonebook.Path);
           break;
         case "4":
-          abonentInfo.DeleteAbonent(abonent);
+          abonentInfo.DeleteAbonent(abonent, phonebook.Path);
           break;
         case "5":
           Exit(abonent);
