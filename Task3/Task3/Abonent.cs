@@ -204,7 +204,12 @@ namespace Task3
         Phonebook.Menu(abonent);
       }
     }
-    
+    /// <summary>
+    /// Ищет экземпляр класса Abonent по значению параметра PhoneNumber.
+    /// </summary>
+    /// <param name="abonent"></param>
+    /// <param name="path"></param>
+    /// <exception cref="ArgumentException"></exception>
     private void FindByNumber(List<Abonent> abonent, string path)
     {
       var foundAbonents = new List<Abonent>();
@@ -235,7 +240,11 @@ namespace Task3
           Console.WriteLine($"{foundAbonent.Name} {foundAbonent.PhoneNumber}");
       } 
     }
-
+    /// <summary>
+    /// Ищет экземпляр класса Abonent по значению параметра Name.
+    /// </summary>
+    /// <param name="abonent"></param>
+    /// <param name="path"></param>
     private void FindByName(List<Abonent> abonent, string path)
     {
       Console.WriteLine("Введите имя абонента для поиска.");
@@ -262,7 +271,12 @@ namespace Task3
           Console.WriteLine($"{foundAbonent.Name} {foundAbonent.PhoneNumber}");
       }
     }
-
+    /// <summary>
+    /// Ищет экземпляр класса Abonent по значению параметра PhoneNumber.
+    /// </summary>
+    /// <param name="abonent"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     private List<Abonent> FindByNumber(List<Abonent> abonent)
     {
       var foundAbonents = new List<Abonent>();
@@ -282,7 +296,11 @@ namespace Task3
       }
       return foundAbonents;
     }
-
+    /// <summary>
+    /// Ищет экземпляр класса Abonent по значению параметра Name.
+    /// </summary>
+    /// <param name="abonent"></param>
+    /// <returns></returns>
     private List<Abonent> FindByName(List<Abonent> abonent)
     {
       Console.WriteLine("Введите имя абонента для поиска.");
@@ -299,7 +317,7 @@ namespace Task3
       }
       return foundAbonents;
     }
-
+    
     public void UpdateAbonent(List<Abonent> abonent, string path)
     {
       Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
@@ -368,7 +386,13 @@ namespace Task3
         Phonebook.Menu(abonent);
       }
     }
-
+    /// <summary>
+    /// Обновляет данные о экземпляре класса Abonent и обновляет содержимое файла phonebook.txt
+    /// </summary>
+    /// <param name="abonent"></param>
+    /// <param name="path"></param>
+    /// <param name="updateNumber"></param>
+    /// <exception cref="ArgumentException"></exception>
     private static void UpdateAbonentInfo(List<Abonent> abonent, string path, long updateNumber)
     {
       var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == updateNumber));
@@ -464,7 +488,12 @@ namespace Task3
         Phonebook.Menu(abonent);
       }
     }
-
+    /// <summary>
+    /// Удаляет из коллекции экземпляр класса Abonent и обновляет содержимое файла phonebook.txt
+    /// </summary>
+    /// <param name="abonent"></param>
+    /// <param name="path"></param>
+    /// <param name="deleteNumber"></param>
     private void DeleteAbonentInfo(List<Abonent> abonent, string path, long deleteNumber)
     {
       var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == deleteNumber));

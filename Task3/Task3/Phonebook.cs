@@ -60,6 +60,7 @@ namespace Task3
       {
         var abonentInfo = str.Split(' ');
         var abonent = new Abonent();
+
         abonent.PhoneNumber = long.Parse(abonentInfo[0]);
         abonent.Name = abonentInfo[1];
         phonebook.abonent.Add(abonent);
@@ -106,6 +107,7 @@ namespace Task3
     {
       Console.WriteLine("Вы действительно хотите выйти из программы? [y/n]");
       var exit = Console.ReadLine();
+
       if (exit == "y")
         Console.WriteLine("Выход из программы...");
       else if (exit == "n")
