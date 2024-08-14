@@ -44,7 +44,7 @@ namespace Task3
     /// Метод для добавления нового абонента в телефонную книгу при помощи считывания строк из консоли.
     /// </summary>
     /// <param name="abonent"></param>
-    public void CreateAbonent(List<Abonent> abonent, string path)//Должен добавлять в List<Abonent> нового абонента.
+    public void CreateAbonent(List<Abonent> abonent, string path)
     {
       var abonentInfo = new Abonent();
       var foundAbonents = new List<Abonent>();
@@ -59,14 +59,13 @@ namespace Task3
           throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
         else
           abonentInfo.PhoneNumber = long.Parse(number);
-
-        Console.WriteLine("Введите имя абонента");
-        abonentInfo.Name = Console.ReadLine();
-
         foundAbonents = abonent.FindAll(a => a.PhoneNumber == long.Parse(number));
 
         if (foundAbonents.Count == 0)
         {
+          Console.WriteLine("Введите имя абонента");
+          abonentInfo.Name = Console.ReadLine();
+
           abonent.Add(abonentInfo);
           using (StreamWriter sw = File.AppendText(path))
           {
@@ -80,7 +79,7 @@ namespace Task3
       }
       catch
       {
-        Console.WriteLine("Произошла ошибка при добавлении нового абонента в телефонную книгу. Попытайтесь еще раз.");
+        Console.WriteLine("Произошла ошибка при добавлении нового абонента в телефонную книгу. Повторите попытку позднее.");
       }
       finally
       {
@@ -93,7 +92,7 @@ namespace Task3
     /// </summary>
     /// <param name="abonent"></param>
     /// <param name="phoneNumber"></param>
-    public void CreateAbonent(List<Abonent> abonent, long phoneNumber, string path)//Должен добавлять в List<Abonent> нового абонента.
+    public void CreateAbonent(List<Abonent> abonent, long phoneNumber, string path)
     {
       var abonentInfo = new Abonent();
       var foundAbonents = new List<Abonent>();
@@ -121,7 +120,7 @@ namespace Task3
       }
       catch
       {
-        Console.WriteLine("Произошла ошибка при добавлении нового абонента в телефонную книгу. Попытайтесь еще раз.");
+        Console.WriteLine("Произошла ошибка при добавлении нового абонента в телефонную книгу. Повторите попытку позднее.");
       }
       finally
       {
@@ -134,7 +133,7 @@ namespace Task3
     /// </summary>
     /// <param name="abonent"></param>
     /// <param name="phoneNumber"></param>
-    public void CreateAbonent(List<Abonent> abonent, string name, string path)//Должен добавлять в List<Abonent> нового абонента.
+    public void CreateAbonent(List<Abonent> abonent, string name, string path)
     {
       var abonentInfo = new Abonent();
       var foundAbonents = new List<Abonent>();
@@ -146,9 +145,7 @@ namespace Task3
         var number = Console.ReadLine();
 
         if (string.IsNullOrEmpty(number))
-        {
           throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
-        }
         else
           abonentInfo.PhoneNumber = long.Parse(number);
 
@@ -168,7 +165,7 @@ namespace Task3
       }
       catch
       {
-        Console.WriteLine("Произошла ошибка при добавлении нового абонента в телефонную книгу. Попытайтесь еще раз.");
+        Console.WriteLine("Произошла ошибка при добавлении нового абонента в телефонную книгу. Повторите попытку позднее.");
       }
       finally
       {
@@ -178,24 +175,33 @@ namespace Task3
 
     public void ReadAbonent(List<Abonent> abonent, string path)
     {
-      Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
+      try
+      {
+        Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
         $"Нажмите клавишу 'н', чтобы найти абонента по номеру телефона.");
 
-      var searchMethod = (Console.ReadLine()).ToLower();
+        var searchMethod = (Console.ReadLine()).ToLower();
 
-      switch (searchMethod)
+        switch (searchMethod)
+        {
+          case "и":
+            FindByName(abonent, path);
+            Phonebook.Menu(abonent);
+            break;
+          case "н":
+            FindByNumber(abonent, path);
+            Phonebook.Menu(abonent);
+            break;
+          default:
+            Console.WriteLine("Введено недопустимое значение");
+            Phonebook.Menu(abonent);
+            break;
+        }
+      }
+      catch
       {
-        case "и":
-          FindByName(abonent, path);
-          Phonebook.Menu(abonent);
-          break;
-        case "н":
-          FindByNumber(abonent, path);
-          Phonebook.Menu(abonent);
-          break;
-        default:
-          Console.WriteLine("Введено недопустимое значение");
-          break;
+        Console.WriteLine("Поиск абонента был произведен с ошибкой. Повторите попытку позднее.");
+        Phonebook.Menu(abonent);
       }
     }
     
@@ -293,161 +299,195 @@ namespace Task3
       }
       return foundAbonents;
     }
-    /*Для методов UpdateAbonent и DeleteAbonent когда будет осуществляться поиск по имени и будет несколько абонентов
-     * с таким именем нужно после вывода всех абонентов запускать поиск по номеру и редактировать/удалять уже этот элемент.
-     * В List<Abonent> находить индекс экземпляра класса с введенным значением PhoneNumber.
-     * Обновить эти значения в тектовом файле.
-     */
-    public void UpdateAbonent(List<Abonent> abonent, string path)//Должен обновлять данные абонента по номеру телефона или по имени абонента.
+
+    public void UpdateAbonent(List<Abonent> abonent, string path)
     {
-      //ReadAbonent(abonent);
       Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
         $"Нажмите клавишу 'н', чтобы найти абонента по номеру телефона.");
-
-      var searchMethod = (Console.ReadLine()).ToLower();
-      var foundAbonents = new List<Abonent>();
-
-      switch (searchMethod)
+      try
       {
-        case "и":
-           foundAbonents = FindByName(abonent);
-          if (foundAbonents.Count > 1)
-          {
-            Console.WriteLine("Введите номер абонента, данные которого вы хотите обновить");
-            var number = Console.ReadLine();
-            if (string.IsNullOrEmpty(number))
-              throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
-            else
+        var searchMethod = (Console.ReadLine()).ToLower();
+        var foundAbonents = new List<Abonent>();
+
+        switch (searchMethod)
+        {
+          case "и":
+            foundAbonents = FindByName(abonent);
+            if (foundAbonents.Count > 1)
             {
-              if (!abonent.Exists(a => a.PhoneNumber == long.Parse(number)))
-              {
-                Console.WriteLine("Абонента с таким номером не существует в телефонной книге");
-                UpdateAbonent(abonent, path);
-              } 
+              Console.WriteLine("Введите номер абонента, данные которого вы хотите обновить");
+              var number = Console.ReadLine();
+
+              if (string.IsNullOrEmpty(number))
+                throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
               else
               {
-                Console.WriteLine("Абонент найден");
-                UpdateAbonentInfo(abonent, path, long.Parse(number));
-                Phonebook.Menu(abonent);
+                if (!abonent.Exists(a => a.PhoneNumber == long.Parse(number)))
+                {
+                  Console.WriteLine("Абонента с таким номером не существует в телефонной книге");
+                  UpdateAbonent(abonent, path);
+                }
+                else
+                {
+                  Console.WriteLine("Абонент найден");
+                  UpdateAbonentInfo(abonent, path, long.Parse(number));
+                  Phonebook.Menu(abonent);
+                }
               }
             }
-          }
-          else if(foundAbonents.Count == 1)
-          {
-            Console.WriteLine("Абонент найден");
-            UpdateAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
+            else if (foundAbonents.Count == 1)
+            {
+              Console.WriteLine("Абонент найден");
+              UpdateAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
+              Phonebook.Menu(abonent);
+            }
+            else
+              Phonebook.Menu(abonent);
+            break;
+          case "н":
+            foundAbonents = FindByNumber(abonent);
+
+            if (foundAbonents.Count == 1)
+            {
+              Console.WriteLine("Абонент найден");
+              UpdateAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
+              Phonebook.Menu(abonent);
+            }
+            else
+              Phonebook.Menu(abonent);
+            break;
+          default:
+            Console.WriteLine("Введено недопустимое значение");
             Phonebook.Menu(abonent);
-          }
-          else
-            Phonebook.Menu(abonent);
-          break;
-        case "н":
-          foundAbonents = FindByNumber(abonent);
-          if (foundAbonents.Count == 1)
-          {
-            Console.WriteLine("Абонент найден");
-            UpdateAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
-            Phonebook.Menu(abonent);
-          }
-          else
-            Phonebook.Menu(abonent);
-          break;
-        default:
-          Console.WriteLine("Введено недопустимое значение");
-          Phonebook.Menu(abonent);
-          break;
+            break;
+        }
+      }
+      catch
+      {
+        Console.WriteLine("Редактирование данных об абоненте было выполнено с ошибкой");
+        Phonebook.Menu(abonent);
       }
     }
 
     private static void UpdateAbonentInfo(List<Abonent> abonent, string path, long updateNumber)
     {
-      var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == updateNumber));//находит индекс элемента, который нужно заменить
+      var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == updateNumber));
       Console.WriteLine("Введите новое значение имени");
-      //добавить проверки на пустые строки и некорректный ввод
+      
       abonent[index].Name = Console.ReadLine();
-      Console.WriteLine("Введите новое значение для номера телефона");
-      abonent[index].PhoneNumber = long.Parse(Console.ReadLine());
-
-      using (StreamWriter sw = File.CreateText(path))
+      if (string.IsNullOrEmpty(abonent[index].Name))
+        throw new ArgumentException("Имя не может быть пустой строкой!");
+      else
       {
-        foreach (var abonentInfo in abonent)
-          sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
-      }
-      Console.WriteLine($"Данные о пользователе с именем {abonent[index].Name} и номером телефона {abonent[index].PhoneNumber} " +
-        $"успешно обновлены");
+        Console.WriteLine("Введите новое значение для номера телефона");
+        var number = Console.ReadLine();
+        if (string.IsNullOrEmpty(number))
+          throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
+        {
+          abonent[index].PhoneNumber = long.Parse(number);
+
+          using (StreamWriter sw = File.CreateText(path))
+          {
+            foreach (var abonentInfo in abonent)
+              sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
+          }
+          Console.WriteLine($"Данные о пользователе с именем {abonent[index].Name} и номером телефона {abonent[index].PhoneNumber} " +
+            $"успешно обновлены");
+        }
+      }      
     }
 
     public void DeleteAbonent(List<Abonent> abonent, string path)//Удалить всю информацию об абоненте.
     {
       Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
         $"Нажмите клавишу 'н', чтобы найти абонента по номеру телефона.");
-
+      try
+      {
+        
       var searchMethod = (Console.ReadLine()).ToLower();
       var foundAbonents = new List<Abonent>();
 
-      switch (searchMethod)
-      {
-        case "и":
-          foundAbonents = FindByName(abonent);
-          if (foundAbonents.Count > 1)
-          {
-            Console.WriteLine("Введите номер абонента, данные которого вы хотите удалить");
-            var number = Console.ReadLine();
-            if (string.IsNullOrEmpty(number))
-              throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
-            else
+        switch (searchMethod)
+        {
+          case "и":
+            foundAbonents = FindByName(abonent);
+            if (foundAbonents.Count > 1)
             {
-              if (!abonent.Exists(a => a.PhoneNumber == long.Parse(number)))
-              {
-                Console.WriteLine("Абонента с таким номером не существует в телефонной книге");
-                DeleteAbonent(abonent, path);
-              }
+              Console.WriteLine("Введите номер абонента, данные которого вы хотите удалить");
+              var number = Console.ReadLine();
+              if (string.IsNullOrEmpty(number))
+                throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
               else
               {
-                Console.WriteLine("Абонент найден");
-                DeleteAbonentInfo(abonent, path, long.Parse(number));
-                Phonebook.Menu(abonent);
+                if (!abonent.Exists(a => a.PhoneNumber == long.Parse(number)))
+                {
+                  Console.WriteLine("Абонента с таким номером не существует в телефонной книге");
+                  DeleteAbonent(abonent, path);
+                }
+                else
+                {
+                  Console.WriteLine("Абонент найден");
+                  DeleteAbonentInfo(abonent, path, long.Parse(number));
+                  Phonebook.Menu(abonent);
+                }
               }
             }
-          }
-          else if (foundAbonents.Count == 1)
-          {
-            Console.WriteLine("Абонент найден");
-            DeleteAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
+            else if (foundAbonents.Count == 1)
+            {
+              Console.WriteLine("Абонент найден");
+              DeleteAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
+              Phonebook.Menu(abonent);
+            }
+            else
+              Phonebook.Menu(abonent);
+            break;
+          case "н":
+            foundAbonents = FindByNumber(abonent);
+            if (foundAbonents.Count == 1)
+            {
+              Console.WriteLine("Абонент найден");
+              DeleteAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
+              Phonebook.Menu(abonent);
+            }
+            else
+              Phonebook.Menu(abonent);
+            break;
+          default:
+            Console.WriteLine("Введено недопустимое значение");
             Phonebook.Menu(abonent);
-          }
-          else
-            Phonebook.Menu(abonent);
-          break;
-        case "н":
-          foundAbonents = FindByNumber(abonent);
-          if (foundAbonents.Count == 1)
-          {
-            Console.WriteLine("Абонент найден");
-            DeleteAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
-            Phonebook.Menu(abonent);
-          }
-          else
-            Phonebook.Menu(abonent);
-          break;
-        default:
-          Console.WriteLine("Введено недопустимое значение");
-          Phonebook.Menu(abonent);
-          break;
+            break;
+        }
+      }
+      catch
+      {
+        Console.WriteLine("Удаление абонента было выполнено с ошибкой. Повторите попытку позднее");
+        Phonebook.Menu(abonent);
       }
     }
 
     private void DeleteAbonentInfo(List<Abonent> abonent, string path, long deleteNumber)
     {
-      var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == deleteNumber));//находит индекс элемента, который нужно заменить
-      abonent.RemoveAt(index);
+      var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == deleteNumber));
 
-      using (StreamWriter sw = File.CreateText(path))
+      Console.WriteLine($"Вы действительно хотите удалить абонента с именем {abonent[index].PhoneNumber} с номером {deleteNumber}? [y/n]");
+      if (Console.ReadLine() == "y")
       {
-        foreach (var abonentInfo in abonent)
-          sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
+        abonent.RemoveAt(index);
+
+        using (StreamWriter sw = File.CreateText(path))
+        {
+          foreach (var abonentInfo in abonent)
+            sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
+        }
+        Console.WriteLine($"Данные о пользователе с номером телефона {deleteNumber} были удалены");
       }
-      Console.WriteLine($"Данные о пользователе с номером телефона {deleteNumber} были удалены");
+      else if (Console.ReadLine() == "n")
+        Phonebook.Menu(abonent);
+      else
+      {
+        Console.WriteLine("Было введено некорректное значение");
+        DeleteAbonentInfo(abonent, path, deleteNumber);
+      }
     }
   }
 }
