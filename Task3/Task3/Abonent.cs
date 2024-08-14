@@ -280,7 +280,7 @@ namespace Task3
       }
     }
 
-    private void FindByNumber(List<Abonent> abonent)
+    private List<Abonent> FindByNumber(List<Abonent> abonent)
     {
       var foundAbonents = new List<Abonent>();
       Console.WriteLine("Введите номер абонента для поиска.");
@@ -297,6 +297,7 @@ namespace Task3
         foreach (var foundAbonent in foundAbonents)
           Console.WriteLine($"{foundAbonent.Name} {foundAbonent.PhoneNumber}");
       }
+      return foundAbonents;
     }
 
     private List<Abonent> FindByName(List<Abonent> abonent)
@@ -328,12 +329,11 @@ namespace Task3
 
       var searchMethod = (Console.ReadLine()).ToLower();
       var foundAbonents = new List<Abonent>();
-      long updateNumber = 0; 
 
       switch (searchMethod)
       {
         case "и":
-          foundAbonents = FindByName(abonent);
+           foundAbonents = FindByName(abonent);
           if (foundAbonents.Count > 1)
           {
             Console.WriteLine("Введите номер абонента, данные которого вы хотите обновить");
@@ -350,44 +350,54 @@ namespace Task3
               else
               {
                 Console.WriteLine("Абонент найден");
-                updateNumber = long.Parse(number);
-                var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == updateNumber));//находит индекс элемента, который нужно заменить
-                Console.WriteLine("Введите новое значение имени");
-                //добавить проверки на пустые строки и некорректный ввод
-                abonent[index].Name = Console.ReadLine();
-                Console.WriteLine("Введите новое значение для номера телефона");
-                abonent[index].PhoneNumber = long.Parse(Console.ReadLine());
-
-                  using (StreamWriter sw = File.CreateText(path))
-                  {
-                  foreach(var abonentInfo in abonent)
-                    sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
-                  }
-                Console.WriteLine($"Данные о пользователе с именем {abonent[index].Name} и номером телефона {abonent[index].PhoneNumber} " +
-                  $"успешно обновлены");
+                UpdateAbonentInfo(abonent, path, long.Parse(number));
                 Phonebook.Menu(abonent);
               }
             }
           }
           else if(foundAbonents.Count == 1)
           {
-            //после ввода номера вызвать метод, который обновит данные в листе и затем перепишет данные в файле
-            //foundAbonents[0].PhoneNumber отправить в этот метод
-          }
-          else
-          {
+            Console.WriteLine("Абонент найден");
+            UpdateAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
             Phonebook.Menu(abonent);
           }
+          else
+            Phonebook.Menu(abonent);
           break;
         case "н":
-          FindByNumber(abonent);
-          //Phonebook.Menu(abonent);
+          foundAbonents = FindByNumber(abonent);
+          if (foundAbonents.Count == 1)
+          {
+            Console.WriteLine("Абонент найден");
+            UpdateAbonentInfo(abonent, path, foundAbonents[0].PhoneNumber);
+            Phonebook.Menu(abonent);
+          }
+          else
+            Phonebook.Menu(abonent);
           break;
         default:
           Console.WriteLine("Введено недопустимое значение");
           Phonebook.Menu(abonent);
           break;
       }
+    }
+
+    private static void UpdateAbonentInfo(List<Abonent> abonent, string path, long updateNumber)
+    {
+      var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == updateNumber));//находит индекс элемента, который нужно заменить
+      Console.WriteLine("Введите новое значение имени");
+      //добавить проверки на пустые строки и некорректный ввод
+      abonent[index].Name = Console.ReadLine();
+      Console.WriteLine("Введите новое значение для номера телефона");
+      abonent[index].PhoneNumber = long.Parse(Console.ReadLine());
+
+      using (StreamWriter sw = File.CreateText(path))
+      {
+        foreach (var abonentInfo in abonent)
+          sw.WriteLine($"{abonentInfo.PhoneNumber} {abonentInfo.Name}");
+      }
+      Console.WriteLine($"Данные о пользователе с именем {abonent[index].Name} и номером телефона {abonent[index].PhoneNumber} " +
+        $"успешно обновлены");
     }
 
     public void DeleteAbonent(List<Abonent> abonent)//Удалить всю информацию об абоненте.
