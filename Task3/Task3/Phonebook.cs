@@ -17,9 +17,11 @@ namespace Task3
 
     public static Phonebook getPhonebook(string path)
     {
-      if(phonebook==null)
+      if (phonebook == null)
+      {
         phonebook = new Phonebook(path);//Вызывает приватный конструктор. 
-      GetAbonents(ReadAbonentsFromFile(phonebook.Path));//Это переделать.
+        GetAbonents(ReadAbonentsFromFile(phonebook.Path));
+      }      
       return phonebook;
     }
 

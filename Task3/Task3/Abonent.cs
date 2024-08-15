@@ -1,7 +1,10 @@
 ﻿using System;
 
 namespace Task3
-{
+{/// <summary>
+/// Структура, содержащая информацию об абоненте.
+/// Поле phoneNumber содержит номер телефона абонента, поле name - имя.
+/// </summary>
   public struct Abonent
   {
     private long phoneNumber;
