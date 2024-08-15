@@ -470,6 +470,7 @@ namespace Task3
     /// <exception cref="ArgumentException"></exception>
     private static void UpdateAbonentInfo(List<Abonent> abonent, string path, long updateNumber)
     {
+      var foundAbonents = new List<Abonent>();
       var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == updateNumber));
       Console.WriteLine("Введите новое значение имени");
 
@@ -483,8 +484,15 @@ namespace Task3
         var number = Console.ReadLine();
         if (string.IsNullOrEmpty(number))
           throw new ArgumentException("Номер телефона не может быть пустрой строкой!");
+
+        foundAbonents = abonent.FindAll(a => a.PhoneNumber == long.Parse(number));
+        
+        if (foundAbonents.Count == 0 || 
+          (foundAbonents.Count == 1 && abonent.IndexOf(abonent.Find(a => a.PhoneNumber == long.Parse(number))) == index))
         {
+          
           updAbonent.PhoneNumber = long.Parse(number);
+          abonent[index] = updAbonent;
 
           using (StreamWriter sw = File.CreateText(path))
           {
@@ -493,6 +501,10 @@ namespace Task3
           }
           Console.WriteLine($"Данные о пользователе с именем {abonent[index].Name} и номером телефона {abonent[index].PhoneNumber} " +
             $"успешно обновлены");
+        }
+        else
+        {
+          Console.WriteLine($"Абонент с номером {number} уже существует под именем {foundAbonents[0].Name}.");
         }
       }
     }
