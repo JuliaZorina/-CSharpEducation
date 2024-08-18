@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace Task3
-{
+{/// <summary>
+/// Содержит данные телефонной книги и методы для работы с ней.
+/// </summary>
+/// <param name="abonent">Коллекция с номерами телефонов и именами абонентов.</param>
   class Phonebook
   {
     private static Phonebook phonebook;
@@ -14,7 +17,11 @@ namespace Task3
     { 
       this.Path = path;
     }
-
+    /// <summary>
+    /// Проверить, существует ли экземпляр класса Phonebook. Если такого экземпляра нет - он создается.
+    /// </summary>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
+    /// <returns>Экземпляр класса Phonebook.</returns>
     public static Phonebook getPhonebook(string path)
     {
       if (phonebook == null)
@@ -30,7 +37,7 @@ namespace Task3
     /// <summary>
     /// Получить список абонентов из файла.
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="path">Путь к файлу, содержащему данные абонентов./param>
     /// <returns>Коллекция строк из считанного файла.</returns>
     private static List<string> ReadAbonentsFromFile(string path)
     {
@@ -52,10 +59,9 @@ namespace Task3
     }
 
     /// <summary>
-    /// Преобразует коллекцию строк в коллекцию экземпляров структуры Abonent.
+    /// Преобразовать коллекцию строк в коллекцию экземпляров структуры Abonent.
     /// </summary>
-    /// <param name="abonentsStrings"></param>
-    /// <returns></returns>
+    /// <param name="abonentsStrings">Коллекция строк, хранящая в себе данные об абонентах.</param>
     private static void GetAbonents(List<string> abonentsStrings)
     {
       foreach (var str in abonentsStrings)
@@ -68,7 +74,10 @@ namespace Task3
         phonebook.abonent.Add(abonent);
       }
     }
-
+    /// <summary>
+    /// Меню для работы с телефонной книгой.
+    /// </summary>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
     public static void Menu(List<Abonent> abonent)
     {
       Console.WriteLine("Нажмите 1 для добавления нового контакта.\n" +
@@ -102,7 +111,10 @@ namespace Task3
           break;
       }
     }
-
+    /// <summary>
+    /// Осуществить выход из программы.
+    /// </summary>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
     private static void Exit(List<Abonent> abonent)
     {
       Console.WriteLine("Вы действительно хотите выйти из программы? [y/n]");
@@ -118,7 +130,11 @@ namespace Task3
         Exit(abonent);
       }
     }
-
+    /// <summary>
+    /// Создать новый экземпляр структуры Abonent, добавить его в коллекцию и обновить содержимое файла с данными телефонной книги.
+    /// </summary>
+    /// <param name="abonent"></param>
+    /// <param name="path"></param>
     public static void CreateAbonent(List<Abonent> abonent, string path)
     {
       var abonentInfo = new Abonent();
@@ -165,8 +181,9 @@ namespace Task3
     /// Создать нового абонента, когда значение параметра PhoneNumber уже было введено ранее при поиске, 
     /// а имя необходимо считать из консоли.
     /// </summary>
-    /// <param name="abonent"></param>
-    /// <param name="phoneNumber"></param>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
+    /// <param name="phoneNumber">Номер телефона абонента.</param>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
     public static void CreateAbonent(List<Abonent> abonent, long phoneNumber, string path)
     {
       var abonentInfo = new Abonent();
@@ -206,8 +223,9 @@ namespace Task3
     /// Создать абонента, когда значение параметра Name уже было введено ранее при поиске, 
     /// а номер телефона необходимо считать из консоли.
     /// </summary>
-    /// <param name="abonent"></param>
-    /// <param name="phoneNumber"></param>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
+    /// <param name="name">Имя абонента.</param>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
     public static void CreateAbonent(List<Abonent> abonent, string name, string path)
     {
       var abonentInfo = new Abonent();
@@ -247,7 +265,11 @@ namespace Task3
         Phonebook.Menu(abonent);
       }
     }
-
+    /// <summary>
+    /// Меню для выбора метода поиска абонента в телефонной книге.
+    /// </summary>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
     public static void ReadAbonent(List<Abonent> abonent, string path)
     {
       try
@@ -282,8 +304,8 @@ namespace Task3
     /// <summary>
     /// Найти экземпляр структуры Abonent по значению параметра PhoneNumber.
     /// </summary>
-    /// <param name="abonent"></param>
-    /// <param name="path"></param>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
     /// <exception cref="ArgumentException"></exception>
     private static void FindByNumber(List<Abonent> abonent, string path)
     {
@@ -318,8 +340,8 @@ namespace Task3
     /// <summary>
     /// Найти экземпляр структуры Abonent по значению параметра Name.
     /// </summary>
-    /// <param name="abonent"></param>
-    /// <param name="path"></param>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
     private static void FindByName(List<Abonent> abonent, string path)
     {
       Console.WriteLine("Введите имя абонента для поиска.");
@@ -349,7 +371,7 @@ namespace Task3
     /// <summary>
     /// Найти экземпляр структуры Abonent по значению параметра PhoneNumber.
     /// </summary>
-    /// <param name="abonent"></param>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
     /// <returns>Коллекция экземпляров структуры Abonent, соответсвующих условиям поиска.</returns>
     /// <exception cref="ArgumentException"></exception>
     private static List<Abonent> FindByNumber(List<Abonent> abonent)
@@ -374,7 +396,7 @@ namespace Task3
     /// <summary>
     /// Найти экземпляр структуры Abonent по значению параметра Name.
     /// </summary>
-    /// <param name="abonent"></param>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
     /// <returns>Коллекция экземпляров структуры Abonent, соответсвующих условиям поиска.</returns>
     private static List<Abonent> FindByName(List<Abonent> abonent)
     {
@@ -392,7 +414,11 @@ namespace Task3
       }
       return foundAbonents;
     }
-
+    /// <summary>
+    /// Меню для выбора способа обновления данных об абоненте.
+    /// </summary>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
     public static void UpdateAbonent(List<Abonent> abonent, string path)
     {
       Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
@@ -464,9 +490,9 @@ namespace Task3
     /// <summary>
     /// Обновить данные о экземпляре структуры Abonent и обновить содержимое файла phonebook.txt.
     /// </summary>
-    /// <param name="abonent"></param>
-    /// <param name="path"></param>
-    /// <param name="updateNumber"></param>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
+    /// <param name="updateNumber">Номер телефона абонента, данные о котором необходимо обновить.</param>
     /// <exception cref="ArgumentException"></exception>
     private static void UpdateAbonentInfo(List<Abonent> abonent, string path, long updateNumber)
     {
@@ -508,8 +534,12 @@ namespace Task3
         }
       }
     }
-
-    public static void DeleteAbonent(List<Abonent> abonent, string path)//Удалить всю информацию об абоненте.
+    /// <summary>
+    /// Меню для выбора способа удаления данных об абоненте.
+    /// </summary>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
+    public static void DeleteAbonent(List<Abonent> abonent, string path)
     {
       Console.WriteLine($"Нажмите клавишу 'и', чтобы найти абонента по имени.\n" +
         $"Нажмите клавишу 'н', чтобы найти абонента по номеру телефона.");
@@ -579,9 +609,9 @@ namespace Task3
     /// <summary>
     /// Удалить из коллекции экземпляр структуры Abonent и обновить содержимое файла phonebook.txt
     /// </summary>
-    /// <param name="abonent"></param>
-    /// <param name="path"></param>
-    /// <param name="deleteNumber"></param>
+    /// <param name="abonent">Коллекция объектов структуры Abonent.</param>
+    /// <param name="path">Путь к файлу с данными телефонной книги.</param>
+    /// <param name="deleteNumber">Номер телефона абонента, данные о котором необходимо удалить.</param>
     private static void DeleteAbonentInfo(List<Abonent> abonent, string path, long deleteNumber)
     {
       var index = abonent.IndexOf(abonent.Find(a => a.PhoneNumber == deleteNumber));

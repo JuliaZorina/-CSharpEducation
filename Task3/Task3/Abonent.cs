@@ -2,9 +2,10 @@
 
 namespace Task3
 {/// <summary>
-/// Структура, содержащая информацию об абоненте.
-/// Поле phoneNumber содержит номер телефона абонента, поле name - имя.
+/// Содержит информацию об абоненте.
 /// </summary>
+/// <param name="phoneNumber">Номер телефона абонента.</param>
+/// <param name="name">Имя абонента.</param>
   public struct Abonent
   {
     private long phoneNumber;
