@@ -6,20 +6,19 @@ namespace Task4
   {
     public override string Name { get; set; }
     public override decimal BaseSalary { get; set; }
-    public int WorkingHours {  get; set; }
+    public int WorkingHours { get; set; }
 
-    public PartTimeEmployee(string name, decimal baseSalary, int workingHours) 
-    { 
-      this.Name = name; 
-      this.BaseSalary = baseSalary;
+    public PartTimeEmployee(string name, decimal baseSalary, int workingHours)
+      : base(name, baseSalary) 
+    {
       this.WorkingHours = workingHours;
     }
 
     public override decimal CalculateSalary()
     {
-      return this.BaseSalary * this.WorkingHours;
+      return this.BaseSalary;
     }
-
+    
     public override bool Equals(object obj)
     {
       if (obj == null)

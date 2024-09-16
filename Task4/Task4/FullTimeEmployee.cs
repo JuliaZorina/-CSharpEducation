@@ -8,10 +8,7 @@ namespace Task4
     public override decimal BaseSalary { get; set; }
 
     public FullTimeEmployee(string name, decimal baseSalary) 
-    {
-      this.Name = name;
-      this.BaseSalary = baseSalary; 
-    }
+      : base(name, baseSalary) { }
 
     public override decimal CalculateSalary()
     {
