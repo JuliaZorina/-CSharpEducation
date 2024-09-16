@@ -7,13 +7,21 @@ namespace Task4
   public class EmployeeManager<T> : IEmployeeManager<T>
     where T: Employee
   {
+    #region Поля и свойства
+    /// <summary>
+    /// Коллекция сотрудников.
+    /// </summary>
     protected List<T> employees;
+    #endregion
 
+    #region Конструкторы
     public EmployeeManager()
     {
       this.employees = new List<T>();
     }
+    #endregion
 
+    #region Методы
     public void Add(T employee)
     {
       if (this.employees.Contains(employee))
@@ -48,6 +56,7 @@ namespace Task4
         Console.WriteLine($"Введите новое значение количества отработанных часов для сотрудника {employee.Name}");
         partTimeEmployee.WorkingHours = int.Parse(Console.ReadLine());
       }
-    }    
+    }
+    #endregion
   }
 }
