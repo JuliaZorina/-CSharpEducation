@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp1
+namespace Task4
 {
   public abstract class Employee
   {
