@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Employee.cs" />
     <Compile Include="FullTimeEmployee.cs" />
+    <Compile Include="IEmployeeManager.cs" />
     <Compile Include="PartTimeEmployee.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
