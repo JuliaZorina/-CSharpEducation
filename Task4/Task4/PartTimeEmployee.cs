@@ -19,5 +19,22 @@ namespace Task4
     {
       return this.BaseSalary * this.WorkingHours;
     }
+
+    public override bool Equals(object obj)
+    {
+      if (obj == null)
+        return false;
+      if (obj is PartTimeEmployee)
+      {
+        PartTimeEmployee emp = obj as PartTimeEmployee;
+        return emp.Name == this.Name;
+      }
+      return base.Equals(obj);
+    }
+
+    public override int GetHashCode()
+    {
+      return this.Name.GetHashCode() + this.BaseSalary.GetHashCode();
+    }
   }
 }
