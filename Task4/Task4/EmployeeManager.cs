@@ -38,11 +38,16 @@ namespace Task4
 
     public void Update(T employee)
     {
-      var emp = Get(employee.Name);
-      Console.WriteLine($"Введите новое имя для сотрудника {emp.Name}");
-      emp.Name = Console.ReadLine();
-      Console.WriteLine($"Введите новое значение зарплаты для сотрудника {emp.Name}");
-      emp.BaseSalary = int.Parse(Console.ReadLine());
+      Console.WriteLine($"Введите новое имя для сотрудника {employee.Name}");
+      employee.Name = Console.ReadLine();
+      Console.WriteLine($"Введите новое значение зарплаты для сотрудника {employee.Name}");
+      employee.BaseSalary = decimal.Parse(Console.ReadLine());
+      if (employee is PartTimeEmployee)
+      {
+        var partTimeEmployee = employee as PartTimeEmployee;
+        Console.WriteLine($"Введите новое значение количества отработанных часов для сотрудника {employee.Name}");
+        partTimeEmployee.WorkingHours = int.Parse(Console.ReadLine());
+      }
     }    
   }
 }

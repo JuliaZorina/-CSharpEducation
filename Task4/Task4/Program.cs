@@ -6,6 +6,8 @@ namespace Task4
   {
     static void Main(string[] args)
     {
+      var userMenu = new UserMenu();
+      userMenu.Menu();
     }
   }
 }

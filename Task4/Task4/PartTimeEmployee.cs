@@ -16,7 +16,7 @@ namespace Task4
 
     public override decimal CalculateSalary()
     {
-      return this.BaseSalary;
+      return this.BaseSalary* this.WorkingHours;
     }
     
     public override bool Equals(object obj)

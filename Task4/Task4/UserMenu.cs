@@ -5,58 +5,97 @@ namespace Task4
 {
   public class UserMenu
   {
+    public EmployeeManager<Employee> EmployeeManager { get; set; }
+    public UserMenu() 
+    {
+      EmployeeManager = new EmployeeManager<Employee>();
+    }
     public void Menu() 
     {
-      var manager = new EmployeeManager<Employee>();
-      string name = string.Empty;
-      decimal baseSalary = 0;
-      int workingHours = 0;
-      
+      try
+      {
+        //var manager = new EmployeeManager<Employee>();
+        string name = string.Empty;
+        decimal baseSalary = 0;
+        int workingHours = 0;
+
         Console.WriteLine("Нажмите 1 для добавления полного сотрудника.\n" +
           "Нажмите 2 для добавления частичного сотрудника.\n" +
           "Нажмите 3 для получения данных о сотруднике.\n" +
           "Нажмите 4 для обновления данных сотрудника.\n" +
-          "Нажмите 5 для подсчета зарплаты полного сотрудника.\n" +
-          "Нажмите 6 для подсчета зарплаты частичного сотрудника.\n" +
-          "Нажмите 7 для выхода из программы.");
+          "Нажмите 5 для подсчета зарплаты сотрудника.\n" +
+          "Нажмите 6 для выхода из программы.");
 
         var menu = Console.ReadLine();
 
         switch (menu)
         {
-        case "1":
-          AddFullTimeEmployee(manager, out name, out baseSalary);
-          break;
-
-        case "2":
-          AddPartTimeEmployee(manager, out name, out baseSalary, out workingHours);
-          break;
-
-        case "3":
-          GetEmployee(manager);
-          break;
-
-        case "4":
-            DeleteAbonent(abonent, phonebook.Path);
+          case "1":
+            AddFullTimeEmployee(this.EmployeeManager, out name, out baseSalary);
+            Menu();
+            break;
+          case "2":
+            AddPartTimeEmployee(this.EmployeeManager, out name, out baseSalary, out workingHours);
+            Menu();
+            break;
+          case "3":
+            GetEmployee(this.EmployeeManager, out name);
+            Menu();
+            break;
+          case "4":
+            UpdateEmployee(this.EmployeeManager, out name);
+            Menu();
             break;
           case "5":
-            Exit(abonent);
+            GetEmployeeSalary();
+            Menu();
+            break;
+          case "6":
+            Exit();
             break;
           default:
             Console.WriteLine("Введено некорректное значение!");
             Menu();
-            break;
-        
-      }
-      
-    }
+            break; 
+        }
 
-    private static void GetEmployee(EmployeeManager<Employee> manager)
+        }
+      catch(Exception ex) 
+      {
+        Console.WriteLine(ex.ToString());
+        Menu();
+      }
+
+      }
+
+    private void GetEmployeeSalary()
     {
       string name;
+      Console.WriteLine("Введите имя сотрудника, зарплату которого вы хотите подсчитать");
+      name = Console.ReadLine();
+      var foundEmployee = this.EmployeeManager.Get(name);
+      if (foundEmployee != null)
+      {
+        Console.WriteLine($"Зарплата сотрудника {foundEmployee.Name}: { foundEmployee.CalculateSalary()}");
+      }
+    }
+
+    private static void UpdateEmployee(EmployeeManager<Employee> manager, out string name)
+    {
+      Console.WriteLine("Введите имя сотрудника, данные которого вы хотите обновить");
+      name = Console.ReadLine();
+      var foundEmployee = manager.Get(name);
+      if (foundEmployee != null)
+      {
+        manager.Update(foundEmployee);
+      }
+    }
+
+    private static void GetEmployee(EmployeeManager<Employee> manager, out string name)
+    {
       Console.WriteLine("Введите имя сотрудника");
       name = Console.ReadLine();
-      var foundEmployee = manager.Get(name).Name;
+      var foundEmployee = manager.Get(name);
       if (foundEmployee != null)
       {
         Console.WriteLine($"Имя: {manager.Get(name).Name}. Зарплата: {manager.Get(name).BaseSalary}");
