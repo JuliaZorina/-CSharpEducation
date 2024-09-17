@@ -38,16 +38,37 @@ namespace Task5
         switch (menu)
         {
           case "1":
-            AddUser(out name, out email, out id);
-            Menu();
+            try
+            {
+              AddUser(out name, out email, out id);
+              Menu();
+            }
+            catch (UserAlreadyExistsException ex)
+            {
+              Console.WriteLine(ex.ToString());            
+            }
             break;
           case "2":
-            RemoveUser(out id);
-            Menu();
+            try
+            {
+              RemoveUser(out id);
+              Menu();
+            }
+            catch(UserNotFoundException ex)
+            {
+              Console.WriteLine(ex.ToString());
+            }
             break;
           case "3":
-            FindUserByID(out id);
-            Menu();
+            try
+            {
+              FindUserByID(out id);
+              Menu();
+            }
+            catch (UserNotFoundException ex)
+            {
+              Console.WriteLine(ex.ToString());
+            }
             break;
           case "4":
             this.Manager.ListUser();
@@ -70,21 +91,32 @@ namespace Task5
       }
 
     }
-
+    /// <summary>
+    /// Осуществить поиск пользователя по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор пользователя в системе.</param>
     private void FindUserByID(out int id)
     {
       Console.WriteLine("Введите идентификатор пользователя, которого вы хотите найти.");
       id = int.Parse(Console.ReadLine());
       this.Manager.GetUser(id);
     }
-
+    /// <summary>
+    /// Удалить пользователя из системы.
+    /// </summary>
+    /// <param name="id">Иддентификатор пользователя в системе.</param>
     private void RemoveUser(out int id)
     {
       Console.WriteLine("Введите идентификатор пользователя, которого вы хотите удалить из системы.");
       id = int.Parse(Console.ReadLine());
       this.Manager.RemoveUser(id);
     }
-
+    /// <summary>
+    /// Добавить пользователя в систему.
+    /// </summary>
+    /// <param name="name">Имя пользователя.</param>
+    /// <param name="email">Адрес электронной почты пользователя.</param>
+    /// <param name="id">Идентификатор пользователя в системе.</param>
     private void AddUser(out string name, out string email, out int id)
     {
       Console.WriteLine("Введите id пользователя");
@@ -95,5 +127,24 @@ namespace Task5
       email = Console.ReadLine();
       this.Manager.AddUser(new User(id, name, email));
     }
+    /// <summary>
+    /// Выйти из программы.
+    /// </summary>
+    private void Exit()
+    {
+      Console.WriteLine("Вы действительно хотите выйти из программы? [y/n]");
+      var exit = Console.ReadLine();
+
+      if (exit == "y")
+        Console.WriteLine("Выход из программы...");
+      else if (exit == "n")
+        Menu();
+      else
+      {
+        Console.WriteLine("Введено некорректное значение!");
+        Exit();
+      }
+    }
+    #endregion
   }
 }
