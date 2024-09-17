@@ -25,12 +25,12 @@ namespace Task5
     /// Добавить новго пользователя в коллекцию.
     /// </summary>
     /// <param name="user">Пользователь.</param>
-    /// <exception cref="NotImplementedException"></exception>
+    /// <exception cref="UserAlreadyExistsException">Выбросить исключение, если такой пользователь уже существует.</exception>
     public void AddUser(User user)
     {
       if (this.Users.FirstOrDefault(x=>x.Id==user.Id)!=null) 
       {
-        throw new NotImplementedException();
+        throw new UserAlreadyExistsException("Пользователь с такими данными уже существует!");
       }
       else
       {
@@ -41,13 +41,13 @@ namespace Task5
     /// Удалить пользователя из списка.
     /// </summary>
     /// <param name="id">Идентификатор пользователя.</param>
-    /// <exception cref="NotImplementedException"></exception>
+    /// <exception cref="UserNotFoundException">Выбросить исключение, если пользователь не найден.</exception>
     public void RemoveUser(int id) 
     {
       var foundUser = this.Users.FirstOrDefault(x => x.Id == id);
       if ( foundUser== null)
       {
-        throw new NotImplementedException();
+        throw new UserNotFoundException($"Пользователь с идентификатором {id} не существует в системе.");
       }
       else
       {
@@ -58,13 +58,13 @@ namespace Task5
     /// Получить данные о пользователе по его идентитфикатору.
     /// </summary>
     /// <param name="id">Идентификатор пользователя.</param>
-    /// <exception cref="NotImplementedException"></exception>
+    /// <exception cref="UserNotFoundException">Выбросить исключение, если пользователь не найден.</exception>
     public void GetUser(int id)
     {
       var foundUser = this.Users.FirstOrDefault(x => x.Id == id);
       if (foundUser == null)
       {
-        throw new NotImplementedException();
+        throw new UserNotFoundException($"Пользователь с идентификатором {id} не существует в системе.");
       }
       else
       {
@@ -79,7 +79,7 @@ namespace Task5
     {
       if (this.Users.Count <= 0)
       {
-        throw new NotImplementedException();
+        throw new ArgumentNullException("Список не содержит элементов.");
       }
       else
       {
