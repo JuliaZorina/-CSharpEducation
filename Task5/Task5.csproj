@@ -48,6 +48,7 @@
     <Compile Include="User.cs" />
     <Compile Include="UserAlreadyExistsException.cs" />
     <Compile Include="UserManager.cs" />
+    <Compile Include="UserMenu.cs" />
     <Compile Include="UserNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>

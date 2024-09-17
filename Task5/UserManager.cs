@@ -74,12 +74,11 @@ namespace Task5
     /// <summary>
     /// Получить список всех пользователей и вывести его в консоль.
     /// </summary>
-    /// <exception cref="NotImplementedException"></exception>
     public void ListUser()
     {
       if (this.Users.Count <= 0)
       {
-        throw new ArgumentNullException("Список не содержит элементов.");
+        Console.WriteLine("Список не содержит элементов.");
       }
       else
       {
