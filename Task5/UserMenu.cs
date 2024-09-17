@@ -11,7 +11,7 @@ namespace Task5
     #region Конструкторы
     public UserMenu()
     {
-      Manager = new UserManager();
+      this.Manager = new UserManager();
     }
     #endregion
 
@@ -45,7 +45,8 @@ namespace Task5
             }
             catch (UserAlreadyExistsException ex)
             {
-              Console.WriteLine(ex.ToString());            
+              Console.WriteLine(ex.ToString());
+              Menu();
             }
             break;
           case "2":
@@ -57,6 +58,7 @@ namespace Task5
             catch(UserNotFoundException ex)
             {
               Console.WriteLine(ex.ToString());
+              Menu();
             }
             break;
           case "3":
@@ -68,6 +70,7 @@ namespace Task5
             catch (UserNotFoundException ex)
             {
               Console.WriteLine(ex.ToString());
+              Menu();
             }
             break;
           case "4":

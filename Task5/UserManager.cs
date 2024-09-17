@@ -35,6 +35,7 @@ namespace Task5
       else
       {
         this.Users.Add(user);
+        Console.WriteLine($"Пользователь {user.Name} был успешно добавлен в систему!\n");
       }      
     }
     /// <summary>
@@ -52,6 +53,7 @@ namespace Task5
       else
       {
         this.Users.Remove(foundUser);
+        Console.WriteLine($"Пользователь с идентификатором {id} был успешно удален из системы.\n");
       }
     }
     /// <summary>
@@ -68,7 +70,7 @@ namespace Task5
       }
       else
       {
-        Console.WriteLine($"Пользователь найден.\nИмя:{foundUser.Name}. Почта:{foundUser.Email}");
+        Console.WriteLine($"Пользователь найден.\nИмя:{foundUser.Name}. Почта:{foundUser.Email}\n");
       }
     }
     /// <summary>
@@ -78,14 +80,14 @@ namespace Task5
     {
       if (this.Users.Count <= 0)
       {
-        Console.WriteLine("Список не содержит элементов.");
+        Console.WriteLine("Список не содержит элементов.\n");
       }
       else
       {
         Console.WriteLine("Полный список пользователей:\n");
         foreach (var user in this.Users)
         {
-          Console.WriteLine($"Id:{user.Id} Имя:{user.Name} Почта:{user.Email}");
+          Console.Write($"Id:{user.Id} Имя:{user.Name} Почта:{user.Email}\n");
         }
       }
     }
