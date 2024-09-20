@@ -5,17 +5,13 @@ namespace Task5
   public class UserMenu
   {
     #region Поля и свойства
-    public UserManager Manager { get; set; }
-    #endregion
 
-    #region Конструкторы
-    public UserMenu()
-    {
-      this.Manager = new UserManager();
-    }
+    public UserManager Manager { get; set; }
+
     #endregion
 
     #region Методы
+
     /// <summary>
     /// Меню для взаимодействия пользователя с ситемой.
     /// </summary>
@@ -74,7 +70,7 @@ namespace Task5
             }
             break;
           case "4":
-            this.Manager.ListUser();
+            GetAllUsers();
             Menu();
             break;
           case "5":
@@ -85,14 +81,31 @@ namespace Task5
             Menu();
             break;
         }
-
       }
       catch (Exception ex)
       {
         Console.WriteLine(ex.ToString());
         Menu();
       }
-
+    }
+    /// <summary>
+    /// Получить полный список пользователей системы и вывести его на экран.
+    /// </summary>
+    private void GetAllUsers()
+    {
+      var users = this.Manager.ListUser();
+      if (users != null)
+      {
+        Console.WriteLine("Полный список пользователей:\n");
+        foreach (var user in users)
+        {
+          Console.Write($"Id:{user.Id} Имя:{user.Name} Почта:{user.Email}\n");
+        }
+      }
+      else
+      {
+        Console.WriteLine("Список не найден");
+      }
     }
     /// <summary>
     /// Осуществить поиск пользователя по идентификатору.
@@ -102,7 +115,8 @@ namespace Task5
     {
       Console.WriteLine("Введите идентификатор пользователя, которого вы хотите найти.");
       id = int.Parse(Console.ReadLine());
-      this.Manager.GetUser(id);
+      var foundUser = this.Manager.GetUser(id);
+      Console.WriteLine($"Пользователь найден.\nИмя:{foundUser.Name}. Почта:{foundUser.Email}\n");
     }
     /// <summary>
     /// Удалить пользователя из системы.
@@ -148,6 +162,16 @@ namespace Task5
         Exit();
       }
     }
+
+    #endregion
+
+    #region Конструкторы
+
+    public UserMenu()
+    {
+      this.Manager = new UserManager();
+    }
+
     #endregion
   }
 }
