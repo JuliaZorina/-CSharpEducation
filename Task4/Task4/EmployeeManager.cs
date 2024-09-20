@@ -4,24 +4,24 @@ using System.Linq;
 
 namespace Task4
 {
+  /// <summary>
+  /// Класс для управления списком сотрудников.
+  /// </summary>
+  /// <typeparam name="T">В качестве типа T ожидается Employee.</typeparam>
   public class EmployeeManager<T> : IEmployeeManager<T>
     where T: Employee
   {
     #region Поля и свойства
+
     /// <summary>
     /// Коллекция сотрудников.
     /// </summary>
     protected List<T> employees;
-    #endregion
 
-    #region Конструкторы
-    public EmployeeManager()
-    {
-      this.employees = new List<T>();
-    }
     #endregion
-
+    
     #region Методы
+
     public void Add(T employee)
     {
       if (this.employees.Contains(employee))
@@ -57,6 +57,16 @@ namespace Task4
         partTimeEmployee.WorkingHours = int.Parse(Console.ReadLine());
       }
     }
+
+    #endregion
+
+    #region Конструкторы
+
+    public EmployeeManager()
+    {
+      this.employees = new List<T>();
+    }
+
     #endregion
   }
 }

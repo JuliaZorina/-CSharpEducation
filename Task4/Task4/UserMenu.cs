@@ -7,17 +7,13 @@ namespace Task4
   public class UserMenu
   {
     #region Поля и свойства
-    public EmployeeManager<Employee> EmployeeManager { get; set; }
-    #endregion
 
-    #region Конструкторы
-    public UserMenu() 
-    {
-      EmployeeManager = new EmployeeManager<Employee>();
-    }
+    public EmployeeManager<Employee> EmployeeManager { get; set; }
+    
     #endregion
 
     #region Методы
+
     /// <summary>
     /// Меню для взаимодействия пользователя с ситемой.
     /// </summary>
@@ -170,6 +166,16 @@ namespace Task4
         Exit();
       }
     }
+
+    #endregion
+
+    #region Конструкторы
+
+    public UserMenu()
+    {
+      EmployeeManager = new EmployeeManager<Employee>();
+    }
+
     #endregion
   }
 }
