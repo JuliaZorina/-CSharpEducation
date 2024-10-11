@@ -23,7 +23,10 @@ public class Phonebook
   /// <returns>Найденный абонент в книге.</returns>
   public Subscriber GetSubscriber(Guid id)
   {
-    return this.subscribers.Single(s => s.Id == id);
+    var subscriber = this.subscribers.Single(s => s.Id == id);
+    if (subscriber == null)
+      throw new InvalidOperationException();
+    return subscriber;
   }
 
   /// <summary>
@@ -57,7 +60,8 @@ public class Phonebook
   /// <param name="number">Добавляемый номер абонента.</param>
   public void AddNumberToSubscriber(Subscriber subscriber, PhoneNumber number)
   {
-    var newNumbers = new List<PhoneNumber>(subscriber.PhoneNumbers)
+    PhoneNumberValidator.Validate(number);
+        var newNumbers = new List<PhoneNumber>(subscriber.PhoneNumbers)
     {
         number
     };

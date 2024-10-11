@@ -60,8 +60,13 @@ public class Subscriber
   /// <param name="numberses">Номера телефона абонента.</param>
   public Subscriber(Guid id, string name, List<PhoneNumber> numberses)
   {
+    if(string.IsNullOrEmpty(name))
+      throw new ArgumentNullException("name");  
     this.Name = name;
     this.PhoneNumbers = numberses;
+
+    if(id ==  Guid.Empty)
+      throw new ArgumentNullException("id");
     this.Id = id;
   }
 
