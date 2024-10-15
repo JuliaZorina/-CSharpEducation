@@ -67,7 +67,8 @@ namespace Phonebook.Tests
       var subscriberId = Guid.NewGuid();
       var subscriberName = "Julia";
 
-      Assert.Throws<ArgumentException>(() => this.phonebook.AddSubscriber(new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>() 
+      Assert.Throws<ArgumentException>(() => this.phonebook.AddSubscriber(new Subscriber(subscriberId, 
+        subscriberName, new List<PhoneNumber>() 
       { new PhoneNumber("66516546", PhoneNumberType.Personal) })));
     }
 
@@ -116,11 +117,10 @@ namespace Phonebook.Tests
     {
       var subscriberId = Guid.NewGuid();
       var subscriberName = "Julia";
-      var expectedSubscriber = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
       var newPhoneNumber = new PhoneNumber("+7(951)208-4428", PhoneNumberType.Personal);
+      var expectedSubscriber = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>() { newPhoneNumber});
 
       this.phonebook.AddSubscriber(expectedSubscriber);
-      this.phonebook.AddNumberToSubscriber(expectedSubscriber, newPhoneNumber);
 
       Assert.Throws<ArgumentException>(() => this.phonebook.AddNumberToSubscriber(expectedSubscriber, newPhoneNumber));
     }
@@ -161,7 +161,7 @@ namespace Phonebook.Tests
 
       this.phonebook.AddSubscriber(expectedSubscriber);
       
-      Assert.Throws<ArgumentNullException>(() => this.phonebook.RenameSubscriber(expectedSubscriber, subscriberName));
+      Assert.Throws<ArgumentException>(() => this.phonebook.RenameSubscriber(expectedSubscriber, subscriberName));
     }
 
     [Test]

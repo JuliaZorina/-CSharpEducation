@@ -61,13 +61,18 @@ public class Phonebook
   public void AddNumberToSubscriber(Subscriber subscriber, PhoneNumber number)
   {
     PhoneNumberValidator.Validate(number);
-        var newNumbers = new List<PhoneNumber>(subscriber.PhoneNumbers)
+    if (subscriber.PhoneNumbers.Contains(number))
+      throw new ArgumentException();
+    else
+    {
+      var newNumbers = new List<PhoneNumber>(subscriber.PhoneNumbers)
     {
         number
     };
-    var subscriberWithNewNumber = new Subscriber(subscriber.Id, subscriber.Name, newNumbers);
+      var subscriberWithNewNumber = new Subscriber(subscriber.Id, subscriber.Name, newNumbers);
 
-    this.UpdateSubscriber(subscriber, subscriberWithNewNumber);
+      this.UpdateSubscriber(subscriber, subscriberWithNewNumber);
+    }    
   }
 
   /// <summary>
@@ -77,6 +82,8 @@ public class Phonebook
   /// <param name="newName">Новое имя абонента.</param>
   public void RenameSubscriber(Subscriber subscriber, string newName)
   {
+    if (subscriber.Name.Equals(newName))
+      throw new ArgumentException();
     var subscriberWithNewName = new Subscriber(subscriber.Id, newName, subscriber.PhoneNumbers);
 
     this.UpdateSubscriber(subscriber, subscriberWithNewName);
